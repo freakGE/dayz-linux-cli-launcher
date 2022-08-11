@@ -1,5 +1,6 @@
-DayZ Linux CLI Launcher
-====
+# DayZ Linux CLI Launcher
+
+Many thanks to [bastimeyer][bastimeyer]
 
 ## About
 
@@ -10,87 +11,96 @@ Proton is currently unable to start the game's own regular launcher application 
 Automatic Steam workshop mod downloads are currently unsupported due to a limitation of Steam's CLI. Workshop mods will therefore need to be subscribed manually via the web browser. A URL for each missing mod will be printed to the output.
 
 Please see the "Install DayZ" section down below on how to get the game running on Linux.
+Also read "Usage" to use cli full potential.
 
 ## Usage
 
 ```
-Usage: dayz-launcher.sh [OPTION]... [MODID]... [-- [GAME-PARAM]...]
+Starting launcher is simple, u have to run index.js so for that u have to install node in ur system.
 
-Automatically set up mods for DayZ, launch the game and connect to a server,
-or print the game's -mod command line argument for custom configuration.
+if u want execute script from home:
+  create shell script and call index.js, node $PATH/index.js
 
-Command line options:
+  for ex I have installed folder in home so for me it would be something like this:
+    touch dayz-cli-launcher.sh
+    chmod u+x dayz-cli-launcher.sh
 
-  -h
-  --help
-    Print this help text.
+    open script and copy/paste.
 
-  -d
-  --debug
-    Print debug messages to output.
+      #!/bin/bash
 
-  --steam <"" | flatpak | /path/to/steam/executable>
-    If set to flatpak, use the flatpak version of Steam (com.valvesoftware.Steam).
-    Steam needs to already be running in the flatpak container.
-    Default is: "" (automatic detection - prefers flatpak if available)
+      node dayz-linux-cli-launcher/JS/index.js
 
-  -l
-  --launch
-    Launch DayZ after resolving and setting up mods instead of
-    printing the game's -mod command line argument.
-    Any custom game parameters that come after the first double-dash (--) will
-    be appended to the overall launch command line. This implies --launch.
 
-  -n <name>
-  --name <name>
-    Set the profile name when launching the game via --launch.
-    Some community servers require a profile name when trying to connect.
+now run ./dayz-cli-launcher.sh to launch it.
 
-  -s <address[:port]>
-  --server <address[:port]>
-    Retrieve a server's mod list and add it to the remaining input.
-    Uses the dayzsalauncher.com JSON API.
-    If --launch is set, it will automatically connect to the server.
-    The optional port is the server's game port. Default is: 2302
+After launching it u can start searching servers, list length (maximum) default will be 100, u can change it in index.js u have to find variable "maxListLength"
 
-  -p <port>
-  --port <port>
-    The server's query port, not to be confused with the server's game port.
-    Default is: 27016
+For better results u can use flags, please read "Flags" to use full potential of launcher.
 
-Environment variables:
+After finding server that u want just enter number of that server.
 
-  STEAM_ROOT
-    Set a custom path to Steam's root directory. Default is:
-    ${XDG_DATA_HOME:-${HOME}/.local/share}/Steam
-    which defaults to ~/.local/share/Steam
+U can enter ur name but default will be smth else, u can change it in index.js u have to find variable "userName" for that.
 
-    If the flatpak package is being used, then the default is:
-    ~/.var/app/com.valvesoftware.Steam/data/Steam
+Also you can add server to favorites by simple choosing server number and adding "+", to remove from favorites add "-", for ex: 1 + | 1 -
 
-    If the game is stored in a different Steam library directory, then this
-    environment variable needs to be set/changed.
+To see more information about server add "i" to integer so for ex: 1 i
+Where u can read everything about server. From here u can also see which mods are server using, u can simple click url(s) and subscribe/unsubscribe them.
+U can add/remove favorites from there as well.
 
-    For example, if the game has been installed in the game library located in
-      /media/games/SteamLibrary/steamapps/common/DayZ
-    then the STEAM_ROOT env var needs to be set like this:
-      STEAM_ROOT=/media/games/SteamLibrary
+P.S Favorited servers background default color is yellow...
+
+You can change colors of text inside index.js just search "change color" and edit functions as u wish. To check what colors are supported u have to check two link above text that u search.
 ```
 
-## Examples
+### Flags
 
-```sh
-# configure mods by ID
-./dayz-launcher.sh -d 123 456 789
+```
+"text text1" => in quotes it will search string as one word, so instead of searching "text" || "text1" it will show server where all of them are in.
 
-# retrieve mods list from server, configure mods and launch the game
-./dayz-launcher.sh -d -l -s address:gameport -p queryport -n nickname
+min=x, max=y => min/max is filtring server by players, so if u want server with minimum 25 player, type min=25, server with maximum 75 players? max=25, u can   also use both to find server above 25 and lower 75 players same time.
 
-# configure mods by ID and connect
-./dayz-launcher.sh -d 123 456 789 -- -connect=address -name=nickname
+range(min,max) => range from min to max, basically its same as above but u have to enter both min and max. range(25,75)
 
-# run game from a different Steam games library path
-STEAM_ROOT=/media/games/SteamLibrary ./dayz-launcher.sh -l -s address
+-3pp => hides third person servers
++3pp => shows only third person servers
+
+-empty => hides empty servers
+
+-full => hides full servers
+
+-password => hides password secured servers
+
+diff version of flags but does same d
++favorites | +favorite | +fav => shows only favorites
+-favorites | -favorite | -fav => hides all favorites
+
+for ex:
+  Search: "vanilla+ vibes" rearmed range(15,50) -fav -3pp -password
+```
+
+### Custom path
+
+```
+file: ./dayz-launcher.sh:
+
+  Environment variables:
+
+    STEAM_ROOT
+      Set a custom path to Steam's root directory. Default is:
+      ${XDG_DATA_HOME:-${HOME}/.local/share}/Steam
+      which defaults to ~/.local/share/Steam
+
+      If the flatpak package is being used, then the default is:
+      ~/.var/app/com.valvesoftware.Steam/data/Steam
+
+      If the game is stored in a different Steam library directory, then this
+      environment variable needs to be set/changed.
+
+      For example, if the game has been installed in the game library located in
+        /media/games/SteamLibrary/steamapps/common/DayZ
+      then the STEAM_ROOT env var needs to be set like this:
+        STEAM_ROOT=/media/games/SteamLibrary
 ```
 
 ## Known issues
@@ -115,7 +125,7 @@ Please refer to your distro's documentation or search engine of choice for how t
 
 ## Future ideas
 
-- Rewrite in Python
+- Add info about ping
 - Don't use a third party server query API and query the server directly
 - Install mods automatically  
   Unfortunately, Steam doesn't support downloading workshop mods via the CLI and only the `steamcmd` CLI utility seems to be able to do this from a command line shell context, but this requires a Steam login via CLI parameters, which is a bit unpractical.
@@ -126,17 +136,9 @@ Please refer to your distro's documentation or search engine of choice for how t
 To install the launcher script, simply clone the git repository:
 
 ```sh
-git clone https://github.com/bastimeyer/dayz-linux-cli-launcher.git
-cd dayz-linux-cli-launcher
-./dayz-launcher.sh ...
-```
-
-or download the raw script file from GitHub and make it executable (check the script file contents first before running it):
-
-```sh
-curl -SL -o dayz-launcher.sh 'https://github.com/bastimeyer/dayz-linux-cli-launcher/raw/master/dayz-launcher.sh'
-chmod +x dayz-launcher.sh
-./dayz-launcher.sh ...
+git clone https://github.com/freakGE/dayz-linux-cli-launcher.git
+cd dayz-linux-cli-launcher/JS/
+node index.js
 ```
 
 ## Install DayZ
@@ -159,8 +161,8 @@ Or apply it permanently:
 ​echo 'vm.max_map_count=1048576' | sudo tee /etc/sysctl.d/vm.max_map_count.conf
 ```
 
-
-  [battleye-announcement]: https://store.steampowered.com/news/group/4145017/view/3104663180636096966
-  [vm.max_map_count]: https://github.com/torvalds/linux/blob/v5.15/Documentation/admin-guide/sysctl/vm.rst#max_map_count
-  [vm.max_map_count-default]: https://github.com/torvalds/linux/blob/v5.15/include/linux/mm.h#L185-L202
-  [tkg-kernel-patch]: https://github.com/Frogging-Family/linux-tkg/blob/db405096bd7fb52656fc53f7c5ee87e7fe2f99c9/linux-tkg-patches/5.15/0003-glitched-base.patch#L477-L534
+[bastimeyer]: https://github.com/bastimeyer
+[battleye-announcement]: https://store.steampowered.com/news/group/4145017/view/3104663180636096966
+[vm.max_map_count]: https://github.com/torvalds/linux/blob/v5.15/Documentation/admin-guide/sysctl/vm.rst#max_map_count
+[vm.max_map_count-default]: https://github.com/torvalds/linux/blob/v5.15/include/linux/mm.h#L185-L202
+[tkg-kernel-patch]: https://github.com/Frogging-Family/linux-tkg/blob/db405096bd7fb52656fc53f7c5ee87e7fe2f99c9/linux-tkg-patches/5.15/0003-glitched-base.patch#L477-L534
