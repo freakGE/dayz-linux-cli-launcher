@@ -248,8 +248,6 @@ const launchDayz = (server) => {
       let minPlayers, maxPlayers;
 
       paramsArray.find((param) => {
-        // TODO: fix space like in quote
-        // ! range(15, 50) is not valid cuz of space after comma
         if (param.startsWith("range(") && param.endsWith(")")) {
           const [min, max] = param.slice(6, -1).split(",");
           minPlayers = parseInt(min);
@@ -415,13 +413,11 @@ const launchDayz = (server) => {
 
         if (param === "i") {
           const checkExistence = favorites.result.find(
-            (obj) =>
-              obj.endpoint.ip === server.endpoint.ip &&
-              obj.endpoint.port === server.endpoint.port
+            (obj) => obj.endpoint.ip === ip && obj.endpoint.port === port
           );
           const favorited = typeof checkExistence === "object";
 
-          const ipInfo = serverIP(server.endpoint.ip);
+          const ipInfo = serverIP(ip);
 
           console.log(`
             ${
@@ -432,11 +428,9 @@ const launchDayz = (server) => {
             ${info("Player count", `${server.players}/${server.maxPlayers}`)}
             ${info(
               "Address",
-              `${server.endpoint.ip}:${
-                server.endpoint.port
-              } (Game Port)\n${" ".repeat(31)}${server.endpoint.ip}:${
-                server.gamePort
-              } (Query Port)`
+              `${ip}:${port} (Game Port)\n${" ".repeat(
+                31
+              )}${ip}:${gamePort} (Query Port)`
             )}
             ${info("Country", ipInfo.countryName)}
             ${info("Map", capitalizeFirstLetter(server.map))}
