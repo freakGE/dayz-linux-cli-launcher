@@ -1,0 +1,29 @@
+{
+  "name": "chalk-pipe",
+  "version": "4.0.0",
+  "description": "Apply a color scheme in a style pipe",
+  "main": "index.js",
+  "scripts": {
+    "test": "xo && nyc ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LitoMore/chalk-pipe.git"
+  },
+  "author": "LitoMore",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LitoMore/chalk-pipe/issues"
+  },
+  "homepage": "https://github.com/LitoMore/chalk-pipe#readme",
+  "devDependencies": {
+    "ava": "^3.8.1",
+    "coveralls": "^3.1.0",
+    "nyc": "^15.0.1",
+    "xo": "^0.30.0"
+  },
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "css-color-names": "^1.0.0"
+  }
+}

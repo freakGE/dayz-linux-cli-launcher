@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "chalk-pipe": "^4.0.0",
+    "node-fetch": "^2.6.7",
+    "shelljs": "^0.8.5",
+    "sync-fetch": "^0.4.1"
+  },
+  "name": "js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

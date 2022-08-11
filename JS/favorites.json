@@ -1,0 +1,638 @@
+{
+  "result": [
+    {
+      "sponsor": false,
+      "profile": false,
+      "nameOverride": false,
+      "mods": [
+        {
+          "name": "[CrSk] BMW 525i E34",
+          "steamWorkshopId": 1869021368
+        },
+        {
+          "name": "CJ187-LootChest",
+          "steamWorkshopId": 2345073965
+        },
+        {
+          "name": "CarCover",
+          "steamWorkshopId": 2303483532
+        },
+        {
+          "name": "AdditionalMedicSupplies",
+          "steamWorkshopId": 2579252958
+        },
+        {
+          "name": "Heli_Test",
+          "steamWorkshopId": 2479183138
+        },
+        {
+          "name": "Vehicle3PP",
+          "steamWorkshopId": 2122332595
+        },
+        {
+          "name": "Notifications",
+          "steamWorkshopId": 2353998362
+        },
+        {
+          "name": "Uncuepas Civilian Clothing",
+          "steamWorkshopId": 1762444175
+        },
+        {
+          "name": "Dogtags",
+          "steamWorkshopId": 2303554682
+        },
+        {
+          "name": "CannabisPlus",
+          "steamWorkshopId": 1932611410
+        },
+        {
+          "name": "Aftermath Weapons",
+          "steamWorkshopId": 2513814070
+        },
+        {
+          "name": "WindstridesClothingPack",
+          "steamWorkshopId": 1797720064
+        },
+        {
+          "name": "BuilderItems",
+          "steamWorkshopId": 1565871491
+        },
+        {
+          "name": "Ear-Plugs",
+          "steamWorkshopId": 1819514788
+        },
+        {
+          "name": "Unlimited Stamina",
+          "steamWorkshopId": 1560819773
+        },
+        {
+          "name": "Aftermath_Licenced",
+          "steamWorkshopId": 2110500088
+        },
+        {
+          "name": "Airdrop-Upgraded",
+          "steamWorkshopId": 1870524790
+        },
+        {
+          "name": "Notes",
+          "steamWorkshopId": 1999076953
+        },
+        {
+          "name": "Dingo_Truck",
+          "steamWorkshopId": 1895432270
+        },
+        {
+          "name": "Cl0ud's Military Gear V8",
+          "steamWorkshopId": 1998403850
+        },
+        {
+          "name": "ZomBerry Admin Tools",
+          "steamWorkshopId": 1582756848
+        },
+        {
+          "name": "VPPAdminTools",
+          "steamWorkshopId": 1828439124
+        },
+        {
+          "name": "Aftermath Clothing",
+          "steamWorkshopId": 2796742107
+        },
+        {
+          "name": "AftermathServerMod",
+          "steamWorkshopId": 2831328574
+        },
+        {
+          "name": "CF",
+          "steamWorkshopId": 1559212036
+        }
+      ],
+      "game": "dayz",
+      "endpoint": {
+        "ip": "141.94.142.233",
+        "port": 27017
+      },
+      "name": "DayZ Aftermath Chernarus EU 3 | FRESH WIPE! | CUSTOM BUILDING",
+      "map": "chernarusplus",
+      "mission": "dayz",
+      "players": 90,
+      "maxPlayers": 90,
+      "environment": "w",
+      "password": false,
+      "version": "1.18.155069",
+      "vac": true,
+      "gamePort": 2402,
+      "shard": "private",
+      "battlEye": true,
+      "timeAcceleration": 6,
+      "time": "09:27",
+      "firstPersonOnly": true
+    },
+    {
+      "sponsor": false,
+      "profile": false,
+      "nameOverride": false,
+      "mods": [
+        {
+          "name": "Rearmed Server Pack",
+          "steamWorkshopId": 2490100317
+        },
+        {
+          "name": "Dabs Framework",
+          "steamWorkshopId": 2545327648
+        },
+        {
+          "name": "Mystery Box",
+          "steamWorkshopId": 2574104127
+        },
+        {
+          "name": "Tactical Flava",
+          "steamWorkshopId": 2646817942
+        },
+        {
+          "name": "Crocos Quadbike",
+          "steamWorkshopId": 2757080411
+        },
+        {
+          "name": "ZStuff",
+          "steamWorkshopId": 2384407442
+        },
+        {
+          "name": "TerrainIslands",
+          "steamWorkshopId": 2393499239
+        },
+        {
+          "name": "SPBuilding",
+          "steamWorkshopId": 2177232791
+        },
+        {
+          "name": "IndustrialModPack",
+          "steamWorkshopId": 2358569462
+        },
+        {
+          "name": "BuildingsMegaModPack",
+          "steamWorkshopId": 2307297070
+        },
+        {
+          "name": "BuildingsModPack7",
+          "steamWorkshopId": 2762521201
+        },
+        {
+          "name": "BaseBuildingPlus",
+          "steamWorkshopId": 1710977250
+        },
+        {
+          "name": "FlipTransport",
+          "steamWorkshopId": 1832448183
+        },
+        {
+          "name": "Arma 2 Helicopters Remastered",
+          "steamWorkshopId": 2651195301
+        },
+        {
+          "name": "DayZ-Expansion-Vehicles",
+          "steamWorkshopId": 2291785437
+        },
+        {
+          "name": "DayZ-Expansion-Licensed",
+          "steamWorkshopId": 2116157322
+        },
+        {
+          "name": "DayZ-Expansion-Animations",
+          "steamWorkshopId": 2793893086
+        },
+        {
+          "name": "DayZ-Expansion-Market",
+          "steamWorkshopId": 2572328470
+        },
+        {
+          "name": "DayZ-Expansion-Name-Tags",
+          "steamWorkshopId": 2576460232
+        },
+        {
+          "name": "DayZ-Expansion-Core",
+          "steamWorkshopId": 2291785308
+        },
+        {
+          "name": "VPPAdminTools",
+          "steamWorkshopId": 1828439124
+        },
+        {
+          "name": "Helicrash Licensed",
+          "steamWorkshopId": 2491484149
+        },
+        {
+          "name": "Mag Obfuscation",
+          "steamWorkshopId": 2449234595
+        },
+        {
+          "name": "Survivalists_FacePaints",
+          "steamWorkshopId": 2786677604
+        },
+        {
+          "name": "Inventory Move Sounds",
+          "steamWorkshopId": 2444247391
+        },
+        {
+          "name": "DayZ Editor Loader",
+          "steamWorkshopId": 2276010135
+        },
+        {
+          "name": "Dogtags",
+          "steamWorkshopId": 2303554682
+        },
+        {
+          "name": "CarCover",
+          "steamWorkshopId": 2303483532
+        },
+        {
+          "name": "Code Lock",
+          "steamWorkshopId": 1646187754
+        },
+        {
+          "name": "Breachingcharge",
+          "steamWorkshopId": 1827241477
+        },
+        {
+          "name": "WindstridesClothingPack",
+          "steamWorkshopId": 1797720064
+        },
+        {
+          "name": "MuchStuffPack",
+          "steamWorkshopId": 1991570984
+        },
+        {
+          "name": "Cl0ud's Military Gear",
+          "steamWorkshopId": 1630943713
+        },
+        {
+          "name": "CF",
+          "steamWorkshopId": 1559212036
+        }
+      ],
+      "game": "dayz",
+      "endpoint": {
+        "ip": "193.25.252.57",
+        "port": 2303
+      },
+      "name": "Rearmed EU3 | 5 Group Max",
+      "map": "ChernarusPlus",
+      "mission": "dayz",
+      "players": 13,
+      "maxPlayers": 120,
+      "environment": "w",
+      "password": false,
+      "version": "1.18.155069",
+      "vac": true,
+      "gamePort": 2302,
+      "shard": "private",
+      "battlEye": true,
+      "timeAcceleration": 6,
+      "time": "07:41",
+      "firstPersonOnly": true
+    },
+    {
+      "sponsor": false,
+      "profile": false,
+      "nameOverride": false,
+      "mods": [
+        {
+          "name": "VPPAdminTools",
+          "steamWorkshopId": 1828439124
+        },
+        {
+          "name": "BuilderItems",
+          "steamWorkshopId": 1565871491
+        },
+        {
+          "name": "WindstridesClothingPack",
+          "steamWorkshopId": 1797720064
+        },
+        {
+          "name": "StalkerZ View Inventory Animation",
+          "steamWorkshopId": 2831962657
+        },
+        {
+          "name": "StalkerZ Weapons",
+          "steamWorkshopId": 2521466850
+        },
+        {
+          "name": "StalkerZ AoD",
+          "steamWorkshopId": 2518719764
+        },
+        {
+          "name": "StalkerZ Mutants",
+          "steamWorkshopId": 2485116735
+        },
+        {
+          "name": "StalkerZ",
+          "steamWorkshopId": 2369273374
+        },
+        {
+          "name": "Mag Obfuscation",
+          "steamWorkshopId": 2449234595
+        },
+        {
+          "name": "Inventory Move Sounds",
+          "steamWorkshopId": 2444247391
+        },
+        {
+          "name": "Quadlock's Pack",
+          "steamWorkshopId": 2484279619
+        },
+        {
+          "name": "Banking",
+          "steamWorkshopId": 1836257061
+        },
+        {
+          "name": "FS",
+          "steamWorkshopId": 2428595209
+        },
+        {
+          "name": "RoadTripNG",
+          "steamWorkshopId": 2354568600
+        },
+        {
+          "name": "Notes",
+          "steamWorkshopId": 1999076953
+        },
+        {
+          "name": "Code Lock",
+          "steamWorkshopId": 1646187754
+        },
+        {
+          "name": "Custom animations",
+          "steamWorkshopId": 2545980712
+        },
+        {
+          "name": "Immersive Placing",
+          "steamWorkshopId": 2521460498
+        },
+        {
+          "name": "Dabs Framework",
+          "steamWorkshopId": 2545327648
+        },
+        {
+          "name": "GRW ER7 Gauss Rifle",
+          "steamWorkshopId": 2307022759
+        },
+        {
+          "name": "S.T.A.L.K.E.R.: Area of Decay Apocalypse",
+          "steamWorkshopId": 2023130302
+        },
+        {
+          "name": "S.T.A.L.K.E.R.: Area of Decay Building",
+          "steamWorkshopId": 2000044203
+        },
+        {
+          "name": "S.T.A.L.K.E.R.: Area of Decay",
+          "steamWorkshopId": 1975926581
+        },
+        {
+          "name": "CF",
+          "steamWorkshopId": 1559212036
+        }
+      ],
+      "game": "dayz",
+      "endpoint": {
+        "ip": "45.131.67.182",
+        "port": 27016
+      },
+      "name": "StalkerZ - Hardcore RolePlay Survival - Discord.gg/StalkerZ",
+      "map": "exclusionzone",
+      "mission": "dayz",
+      "players": 19,
+      "maxPlayers": 90,
+      "environment": "w",
+      "password": true,
+      "version": "1.18.155069",
+      "vac": true,
+      "gamePort": 2302,
+      "shard": "private",
+      "battlEye": true,
+      "timeAcceleration": 4,
+      "time": "17:53",
+      "firstPersonOnly": true
+    },
+    {
+      "sponsor": false,
+      "profile": false,
+      "nameOverride": false,
+      "mods": [
+        {
+          "name": "Vehicle3PP",
+          "steamWorkshopId": 2122332595
+        },
+        {
+          "name": "Server_Information_Panel",
+          "steamWorkshopId": 1680019590
+        },
+        {
+          "name": "Ear-Plugs",
+          "steamWorkshopId": 1819514788
+        },
+        {
+          "name": "Code Lock",
+          "steamWorkshopId": 1646187754
+        },
+        {
+          "name": "CF",
+          "steamWorkshopId": 1559212036
+        },
+        {
+          "name": "MMG Base Storage",
+          "steamWorkshopId": 2789443787
+        },
+        {
+          "name": "VPPAdminTools",
+          "steamWorkshopId": 1828439124
+        },
+        {
+          "name": "VanillaExtentions",
+          "steamWorkshopId": 2816459016
+        }
+      ],
+      "game": "dayz",
+      "endpoint": {
+        "ip": "88.208.225.18",
+        "port": 2305
+      },
+      "name": "Vanilla+ Vibes EU - 1PP|PVP|Loot+|Party|Map|AutoRun|High FPS",
+      "map": "chernarusplus",
+      "mission": "dayz",
+      "players": 70,
+      "maxPlayers": 80,
+      "environment": "w",
+      "password": false,
+      "version": "1.18.155069",
+      "vac": true,
+      "gamePort": 2302,
+      "shard": "private",
+      "battlEye": true,
+      "timeAcceleration": 4,
+      "time": "13:21",
+      "firstPersonOnly": true
+    },
+    {
+      "sponsor": false,
+      "profile": false,
+      "nameOverride": false,
+      "mods": [
+        {
+          "name": "SNAFU Weapons",
+          "steamWorkshopId": 2443122116
+        },
+        {
+          "name": "Cl0ud's Military Gear",
+          "steamWorkshopId": 1630943713
+        },
+        {
+          "name": "SchanaModGlobalChat",
+          "steamWorkshopId": 2115602332
+        },
+        {
+          "name": "SchanaParty",
+          "steamWorkshopId": 2534883520
+        },
+        {
+          "name": "SchanaModCompass",
+          "steamWorkshopId": 2067834152
+        },
+        {
+          "name": "AbsolutPvP - Deathmatch Pack",
+          "steamWorkshopId": 2352649622
+        },
+        {
+          "name": "VPPAdminTools",
+          "steamWorkshopId": 1828439124
+        },
+        {
+          "name": "BuilderItems",
+          "steamWorkshopId": 1565871491
+        },
+        {
+          "name": "CF",
+          "steamWorkshopId": 1559212036
+        }
+      ],
+      "game": "dayz",
+      "endpoint": {
+        "ip": "95.156.230.46",
+        "port": 27020
+      },
+      "name": "AbsolutPvP [Deathmatch] 3PP Krasno | BARRET| M200| LEADERBOARD",
+      "map": "chernarusplus",
+      "mission": "dayz",
+      "players": 35,
+      "maxPlayers": 35,
+      "environment": "w",
+      "password": false,
+      "version": "1.18.155069",
+      "vac": true,
+      "gamePort": 2702,
+      "shard": "private",
+      "battlEye": true,
+      "timeAcceleration": 1,
+      "time": "12:57",
+      "firstPersonOnly": false
+    },
+    {
+      "sponsor": false,
+      "profile": false,
+      "nameOverride": false,
+      "mods": [
+        {
+          "name": "ViewInventoryAnimation",
+          "steamWorkshopId": 2833363308
+        },
+        {
+          "name": "KarmaKrew Esseker",
+          "steamWorkshopId": 2806975587
+        },
+        {
+          "name": "KarmaKrew Weapon Pack",
+          "steamWorkshopId": 2070983362
+        },
+        {
+          "name": "SkyZ - Skybox Overhaul",
+          "steamWorkshopId": 2536780687
+        },
+        {
+          "name": "FlipTransport",
+          "steamWorkshopId": 1832448183
+        },
+        {
+          "name": "Ear-Plugs",
+          "steamWorkshopId": 1819514788
+        },
+        {
+          "name": "Spurgles_BagZ",
+          "steamWorkshopId": 2489196158
+        },
+        {
+          "name": "Cold War Uniforms: Project Iron",
+          "steamWorkshopId": 1999666859
+        },
+        {
+          "name": "Uncuepas Civilian Clothing",
+          "steamWorkshopId": 1762444175
+        },
+        {
+          "name": "WindstridesClothingPack",
+          "steamWorkshopId": 1797720064
+        },
+        {
+          "name": "Advanced Weapon Scopes",
+          "steamWorkshopId": 2143128974
+        },
+        {
+          "name": "KarmaKrew Mods",
+          "steamWorkshopId": 2082123990
+        },
+        {
+          "name": "Esseker",
+          "steamWorkshopId": 2462896799
+        },
+        {
+          "name": "BuilderItems",
+          "steamWorkshopId": 1565871491
+        },
+        {
+          "name": "Dabs Framework",
+          "steamWorkshopId": 2545327648
+        },
+        {
+          "name": "DayZ Editor Loader",
+          "steamWorkshopId": 2276010135
+        },
+        {
+          "name": "VPPAdminTools",
+          "steamWorkshopId": 1828439124
+        },
+        {
+          "name": "CF",
+          "steamWorkshopId": 1559212036
+        }
+      ],
+      "game": "dayz",
+      "endpoint": {
+        "ip": "135.125.189.129",
+        "port": 27025
+      },
+      "name": "KarmaKrew Esseker - 1PP MODS",
+      "map": "Esseker",
+      "mission": "dayz",
+      "players": 50,
+      "maxPlayers": 50,
+      "environment": "w",
+      "password": false,
+      "version": "1.18.155069",
+      "vac": true,
+      "gamePort": 2402,
+      "shard": "private",
+      "battlEye": true,
+      "timeAcceleration": 3,
+      "time": "11:39",
+      "firstPersonOnly": true
+    }
+  ]
+}
