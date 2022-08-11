@@ -21,7 +21,8 @@ Starting launcher is simple, u have to run index.js so for that u have to instal
 if u want execute script from home:
   create shell script and call index.js, node $PATH/index.js
 
-  for ex I have installed folder in home so for me it would be something like this:
+  for ex I have installed launcher in home dir so for me it would be something like this:
+    cd
     touch dayz-cli-launcher.sh
     chmod u+x dayz-cli-launcher.sh
 
@@ -125,6 +126,7 @@ Please refer to your distro's documentation or search engine of choice for how t
 
 ## Future ideas
 
+- locate dayz-launcher.sh instead of using static path
 - Add info about ping
 - Don't use a third party server query API and query the server directly
 - Install mods automatically  
@@ -133,9 +135,10 @@ Please refer to your distro's documentation or search engine of choice for how t
 
 ## Install
 
-To install the launcher script, simply clone the git repository:
+To install the launcher, simply clone the git repository to ur home directory (Before I will change paths to dynamic, otherwise u have to change path inside index.js, u have to find function joinServer and add path of dayz-launncher.sh):
 
 ```sh
+cd
 git clone https://github.com/freakGE/dayz-linux-cli-launcher.git
 cd dayz-linux-cli-launcher/JS/
 node index.js
