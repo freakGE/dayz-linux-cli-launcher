@@ -16,26 +16,13 @@ Also read "Usage" to use cli full potential.
 ## Usage
 
 ```
-Starting launcher is simple, u have to run index.js so for that u have to install node in ur system.
+To launch script you have to install nodeJS.
 
-if u want execute script from home:
-  create shell script and call index.js, node $PATH/index.js
+Follow instructions from "Install"
 
-  for ex I have installed launcher in home dir so for me it would be something like this:
-    cd
-    touch dayz-cli-launcher.sh
-    chmod u+x dayz-cli-launcher.sh
+./dayz-cli-launcher.sh to launch script.
 
-    open script and copy/paste.
-
-      #!/bin/bash
-
-      node dayz-linux-cli-launcher/JS/index.js
-
-
-now run ./dayz-cli-launcher.sh to launch it.
-
-After launching it u can start searching servers, list length (maximum) default will be 100, u can change it in index.js u have to find variable "maxListLength"
+After launching it u can start searching servers, servers list length (maximum) as default will be 100, u can change it in index.js u have to find variable "maxListLength"
 
 For better results u can use flags, please read "Flags" to use full potential of launcher.
 
@@ -140,8 +127,14 @@ To install the launcher, simply clone the git repository to ur home directory (B
 ```sh
 cd
 git clone https://github.com/freakGE/dayz-linux-cli-launcher.git
-cd dayz-linux-cli-launcher/JS/
-node index.js
+touch dayz-cli-launcher.sh
+chmod u+x dayz-cli-launcher.sh
+
+#open script with any text editor and copy/paste.
+
+    #!/bin/bash
+
+    node dayz-linux-cli-launcher/JS/index.js
 ```
 
 ## Install DayZ
