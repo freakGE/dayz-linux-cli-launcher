@@ -63,7 +63,12 @@ diff version of flags but does same d
 +favorites | +favorite | +fav => shows only favorites
 -favorites | -favorite | -fav => hides all favorites
 
-for ex:
++ping => Shows ping on server (not recommended on large scale searchs! Unless u have time to wait...)
+```
+
+For ex:
+
+```sh
   Search: "vanilla+ vibes" rearmed range(15,50) -fav -3pp -password
 ```
 
@@ -114,7 +119,7 @@ Please refer to your distro's documentation or search engine of choice for how t
 ## Future ideas
 
 - locate dayz-launcher.sh instead of using static path
-- Add info about ping
+- Improve performance while displaying ping
 - Don't use a third party server query API and query the server directly
 - Install mods automatically  
   Unfortunately, Steam doesn't support downloading workshop mods via the CLI and only the `steamcmd` CLI utility seems to be able to do this from a command line shell context, but this requires a Steam login via CLI parameters, which is a bit unpractical.
@@ -122,19 +127,21 @@ Please refer to your distro's documentation or search engine of choice for how t
 
 ## Install
 
-To install the launcher, simply clone the git repository to ur home directory (Before I will change paths to dynamic, otherwise u have to change path inside index.js, u have to find function joinServer and add path of dayz-launncher.sh):
+To install the launcher, simply clone the git repository to ur home directory (Before I will change paths to dynamic, otherwise u have to change path inside index.js, u have to find function joinServer and add path of dayz-launcher.sh):
 
 ```sh
 cd
 git clone https://github.com/freakGE/dayz-linux-cli-launcher.git
 touch dayz-cli-launcher.sh
 chmod u+x dayz-cli-launcher.sh
+```
 
-#open script with any text editor and copy/paste.
+Open script with any text editor and copy/paste.
 
-    #!/bin/bash
+```sh
+#!/bin/bash
 
-    node dayz-linux-cli-launcher/JS/index.js
+node dayz-linux-cli-launcher/JS/index.js
 ```
 
 ## Install DayZ
