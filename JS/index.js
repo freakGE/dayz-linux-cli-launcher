@@ -7,11 +7,18 @@ const readline = require("readline");
 const chalk = require("chalk");
 const chalkPipe = require("chalk-pipe");
 const favorites = require("./favorites.json");
-const { type } = require("os");
+const utf8 = require("utf8");
+const Table = require("cli-table");
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
+});
+
+let terminalWidth = process.stdout.columns;
+
+process.stdout.on("resize", () => {
+  terminalWidth = process.stdout.columns;
 });
 
 const inputSymbol = ">";
@@ -25,11 +32,37 @@ const maxListLength = 100;
 
 const color = (clr, text) => chalkPipe(clr)(text);
 /**
- * ? Colors:
  * * ----- * https://github.com/chalk/chalk
  * * ----- * https://github.com/LitoMore/chalk-pipe
- * * change color inside quote.
+ * * ----- * https://github.com/marak/colors.js
+ * ! change color inside quote.
+ * ? Colors:
+ * * ----- * black
+ * * ----- * red
+ * * ----- * green
+ * * ----- * yellow
+ * * ----- * blue
+ * * ----- * magenta
+ * * ----- * cyan
+ * * ----- * white
+ * * ----- * gray
+ * * for background colors => bgRed...
+ * ? Styles:
+ * * ----- * reset
+ * * ----- * bold
+ * * ----- * dim
+ * * ----- * italic
+ * * ----- * underline
+ * * ----- * inverse
+ * * ----- * hidden
+ * * ----- * strikethrough
+ * ? Extras:
+ * * ----- * rainbow
+ * * ----- * zebra
+ * * ----- * america
+ * * ----- * random
  */
+const titleClr = "green";
 const primaryClr = (text) => color("green", text);
 const primaryBoldClr = (text) => color("green.bold", text);
 const secondaryClr = (text) => color("magenta", text);
@@ -39,8 +72,7 @@ const optionClr = (text) => color("yellow", text);
 const commentClr = (text) => color("gray", text);
 const paramClr = (text) => color("cyan", text);
 const alertClr = (text) => color("red.bold", text);
-const passwordClr = (text) => color("red", text);
-const passwordTextClr = (text) => color("bgRed.black", text);
+const passwordClr = (text) => color("red.bold", text);
 const favoriteClr = (text) => color("yellow", text);
 const favoriteBgClr = (text) => color("bgYellow.black.bold", text);
 const favoriteNumberClr = (text) => color("yellow.bold", text);
@@ -250,7 +282,9 @@ const launchDayz = (server) => {
 
       paramsArray.find((param) => {
         if (param.startsWith("range(") && param.endsWith(")")) {
-          const [min, max] = param.slice(6, -1).split(",");
+          let splitter = ",";
+          if (param.includes("-")) splitter = "-";
+          const [min, max] = param.slice(6, -1).split(splitter);
           minPlayers = parseInt(min);
           maxPlayers = parseInt(max);
         }
@@ -296,6 +330,12 @@ const launchDayz = (server) => {
         return;
       if (paramsArray.includes("+3pp") && server.firstPersonOnly === true)
         return;
+
+      if (
+        !paramsArray.includes("+foreign") &&
+        server.name !== utf8.encode(server.name)
+      )
+        return;
       //                                                                //
       if (typeof checkExistence === "object") {
         favoritesArray.push(server);
@@ -305,6 +345,19 @@ const launchDayz = (server) => {
     });
 
     const serversList = favoritesArray.concat(resultArray);
+
+    const table = new Table({
+      style: { head: [titleClr] },
+      head: ["ID", "Server Name", "Players"],
+      colWidths: [5, terminalWidth - 18, 9],
+    });
+
+    const pingTable = new Table({
+      style: { head: [titleClr] },
+      head: ["ID", "Server Name", "Players", "Ping"],
+      colWidths: [5, terminalWidth - 25, 9, 6],
+    });
+    let ping;
 
     const displayList = serversList.map((server, index) => {
       const checkExistence = favorites.result.find(
@@ -322,35 +375,57 @@ const launchDayz = (server) => {
 
       index += 1;
 
-      let ping;
       if (paramsArray.includes("+ping")) {
         ping = shell.exec(
-          `ping -f -c 1 -w 5 -i 0.002 ${server.endpoint.ip} | cut -d "/" -s -f5`,
+          `ping -f -c 1 -w 1 -i 0.002 ${server.endpoint.ip} | cut -d "/" -s -f5`,
           { silent: true }
         );
       }
 
-      console.log(
-        `${index < 10 ? ` ` : ``}${
+      const serverName = server.password
+        ? `${passwordClr("🔒")}${server.name}`
+        : server.name;
+
+      if (paramsArray.includes("+ping")) {
+        pingTable.push([
+          `${index < 10 ? " " : ""}${
+            typeof checkExistence === "object"
+              ? favoriteNumberClr(index)
+              : numberClr(index)
+          }`,
+          typeof checkExistence === "object"
+            ? favoriteClr(`${passwordClr("♥ ")}${serverName}`)
+            : serverName,
+          secondaryClr(
+            `${chalk.bold(server.players)}/${chalk.bold(server.maxPlayers)}`
+          ),
+          Number.isInteger(parseInt(ping))
+            ? paramClr(chalk.bold(parseInt(ping)))
+            : alertClr(chalk.bold(" ✖")),
+        ]);
+      }
+
+      table.push([
+        `${index < 10 ? " " : ""}${
           typeof checkExistence === "object"
             ? favoriteNumberClr(index)
             : numberClr(index)
-        }. ${
-          typeof checkExistence === "object"
-            ? favoriteClr(`${server.name}`)
-            : `${server.name}`
-        } ${secondaryClr(`| Players: ${chalk.bold(server.players)}`)}${
-          server.password
-            ? ` ${passwordClr("|")} ${passwordTextClr("Password")}`
-            : ""
-        } ${
-          Number.isInteger(parseInt(ping))
-            ? paramClr(`| Ping: ${chalk.bold(parseInt(ping))}`)
-            : ""
-        }`
-      );
+        }`,
+        typeof checkExistence === "object"
+          ? favoriteClr(`${passwordClr("♥ ")}${serverName}`)
+          : serverName,
+        secondaryClr(
+          `${chalk.bold(server.players)}/${chalk.bold(server.maxPlayers)}`
+        ),
+      ]);
+
       resultObject[index] = server;
     });
+
+    //* Displays Table
+    console.log(
+      paramsArray.includes("+ping") ? pingTable.toString() : table.toString()
+    );
 
     const listLength = Object.keys(resultObject).length;
 
