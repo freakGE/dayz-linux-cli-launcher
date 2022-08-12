@@ -7,6 +7,7 @@ const readline = require("readline");
 const chalk = require("chalk");
 const chalkPipe = require("chalk-pipe");
 const favorites = require("./favorites.json");
+const { type } = require("os");
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -321,8 +322,16 @@ const launchDayz = (server) => {
 
       index += 1;
 
+      let ping;
+      if (paramsArray.includes("+ping")) {
+        ping = shell.exec(
+          `ping -f -c 1 -w 5 -i 0.002 ${server.endpoint.ip} | cut -d "/" -s -f5`,
+          { silent: true }
+        );
+      }
+
       console.log(
-        `    ${index < 10 ? ` ` : ``}${
+        `${index < 10 ? ` ` : ``}${
           typeof checkExistence === "object"
             ? favoriteNumberClr(index)
             : numberClr(index)
@@ -333,6 +342,10 @@ const launchDayz = (server) => {
         } ${secondaryClr(`| Players: ${chalk.bold(server.players)}`)}${
           server.password
             ? ` ${passwordClr("|")} ${passwordTextClr("Password")}`
+            : ""
+        } ${
+          Number.isInteger(parseInt(ping))
+            ? paramClr(`| Ping: ${chalk.bold(parseInt(ping))}`)
             : ""
         }`
       );
@@ -418,6 +431,10 @@ const launchDayz = (server) => {
           const favorited = typeof checkExistence === "object";
 
           const ipInfo = serverIP(ip);
+          const ping = shell.exec(
+            `ping -f -c 1 -w 5 -i 0.002 ${ip} | cut -d "/" -s -f5`,
+            { silent: true }
+          );
 
           console.log(`
             ${
@@ -430,7 +447,13 @@ const launchDayz = (server) => {
               "Address",
               `${ip}:${port} (Game Port)\n${" ".repeat(
                 31
-              )}${ip}:${gamePort} (Query Port)`
+              )}${ip}:${gamePort} (Query Port)${
+                Number.isInteger(parseInt(ping))
+                  ? `\n${" ".repeat(26)}${primaryBoldClr("Ping")} ${parseInt(
+                      ping
+                    )}`
+                  : ""
+              }`
             )}
             ${info("Country", ipInfo.countryName)}
             ${info("Map", capitalizeFirstLetter(server.map))}
