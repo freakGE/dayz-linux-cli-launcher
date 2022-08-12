@@ -2,9 +2,11 @@
   "dependencies": {
     "chalk": "^4.1.0",
     "chalk-pipe": "^4.0.0",
+    "cli-table": "^0.3.11",
     "node-fetch": "^2.6.7",
     "shelljs": "^0.8.5",
-    "sync-fetch": "^0.4.1"
+    "sync-fetch": "^0.4.1",
+    "utf8": "^3.0.0"
   },
   "name": "js",
   "version": "1.0.0",
