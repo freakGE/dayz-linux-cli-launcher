@@ -26,19 +26,17 @@ After launching it u can start searching servers, servers list length (maximum) 
 
 For better results u can use flags, please read "Flags" to use full potential of launcher.
 
-After finding server that u want just enter number of that server.
+After finding server that u want just enter ID of that server.
 
-U can enter ur name but default will be smth else, u can change it in index.js u have to find variable "userName" for that.
+U can enter ur name (default = Survivor, u can change it in index.js to avoid rewriting ur name over and over, u have to find variable "userName" for that).
 
-Also you can add server to favorites by simple choosing server number and adding "+", to remove from favorites add "-", for ex: 1 + | 1 -
+Also you can add server to favorites by simple choosing server ID and adding "+", to remove from favorites add "-", for ex: 1 + | 1 -
 
-To see more information about server add "i" to integer so for ex: 1 i
+To see more information about server add "i" to ID so for ex: 1 i
 Where u can read everything about server. From here u can also see which mods are server using, u can simple click url(s) and subscribe/unsubscribe them.
 U can add/remove favorites from there as well.
 
-P.S Favorited servers background default color is yellow...
-
-You can change colors of text inside index.js just search "change color" and edit functions as u wish. To check what colors are supported u have to check two link above text that u search.
+You can change colors of text inside index.js just search "change color" and look around...
 ```
 
 ### Flags
@@ -48,7 +46,7 @@ You can change colors of text inside index.js just search "change color" and edi
 
 min=x, max=y => min/max is filtring server by players, so if u want server with minimum 25 player, type min=25, server with maximum 75 players? max=25, u can   also use both to find server above 25 and lower 75 players same time.
 
-range(min,max) => range from min to max, basically its same as above but u have to enter both min and max. range(25,75)
+range(min,max) | range(min-max) => range from min to max, basically its same as above but u have to enter both min and max. range(25,75), range(25-75)
 
 -3pp => hides third person servers
 +3pp => shows only third person servers
@@ -63,7 +61,9 @@ diff version of flags but does same d
 +favorites | +favorite | +fav => shows only favorites
 -favorites | -favorite | -fav => hides all favorites
 
-+ping => Shows ping on server (not recommended on large scale searchs! Unless u have time to wait...)
++ping => Shows ping on server (Not recommended on large scale searchs! Unless u have time to wait...), also u can see ping on server for faster result by going to server information >> 'ID i'
+
++foreign => shows foreign servers (Not recommended! it breaks whole grid system, I have zero experience encoding/decoding utf-8 so before I will learn smth about it, I have decided to hide them as default),
 ```
 
 For ex:
