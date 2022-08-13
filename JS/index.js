@@ -209,6 +209,31 @@ const launchDayz = (server) => {
   );
 };
 
+const serverNameFilter = (server, stringSlicer = 19) => {
+  const checkExistence = favorites.result.find(
+    (obj) =>
+      obj.endpoint.ip === server.endpoint.ip &&
+      obj.endpoint.port === server.endpoint.port
+  );
+
+  let name = server.name;
+  let serverName = server.password ? `${passwordClr("🔒")}${name}` : name;
+  if (name.length > terminalWidth - stringSlicer) {
+    if (name.length > (terminalWidth - stringSlicer) * 2) {
+      serverName = `${
+        name.slice(0, (terminalWidth - stringSlicer) * 2) - 5
+      }...`;
+    }
+    let partOne = name.slice(0, terminalWidth - stringSlicer);
+    let partTwo = name.slice(terminalWidth - stringSlicer);
+    serverName = `${partOne}\n${partTwo}`;
+  }
+
+  return typeof checkExistence === "object"
+    ? favoriteClr(`${passwordClr("♥ ")}${serverName}`)
+    : serverName;
+};
+
 (async () => {
   const data = await servers();
   rl.question(`${primaryClr("Search:")} `, (input) => {
@@ -486,18 +511,35 @@ const launchDayz = (server) => {
           return string.charAt(0).toUpperCase() + string.slice(1);
         };
 
+        let longestModNameLength =
+          server.mods.length > 0
+            ? server.mods.reduce((r, e) =>
+                r.name.length < e.name.length ? e : r
+              )
+            : 0;
+
+        let longestModName =
+          server.mods.length > 0 ? longestModNameLength.name.length : 0;
+
+        longestModName += 2;
+
+        const infoTable = new Table({ colWidths: [14, terminalWidth - 17] });
+        const modsTable = new Table({
+          style: { head: [titleClr] },
+          head: ["Mod", "URL"],
+          colWidths: [longestModName, terminalWidth - longestModName - 3],
+        });
+
         const modsArray = [];
 
         const mods = server.mods.map((mod, index) => {
-          let modsInfo = `${index === 0 ? `` : " ".repeat(17)}${
-            mod.name
-          } (${linkClr(
-            `https://steamcommunity.com/sharedfiles/filedetails/?id=${mod.steamWorkshopId}`
-          )})`;
-          modsArray.push(modsInfo);
+          modsTable.push([
+            secondaryBoldClr(mod.name),
+            linkClr(
+              `https://steamcommunity.com/sharedfiles/filedetails/?id=${mod.steamWorkshopId}`
+            ),
+          ]);
         });
-
-        const modsInfo = modsArray.length > 0 ? modsArray.join(`\n`) : "None";
 
         if (param === "i") {
           const checkExistence = favorites.result.find(
@@ -511,39 +553,53 @@ const launchDayz = (server) => {
             { silent: true }
           );
 
-          console.log(`
-            ${
-              favorited
-                ? favoriteBgClr(server.name)
-                : chalk.inverse.bold(server.name)
-            }
-            ${info("Player count", `${server.players}/${server.maxPlayers}`)}
-            ${info(
-              "Address",
-              `${ip}:${port} (Game Port)\n${" ".repeat(
-                31
-              )}${ip}:${gamePort} (Query Port)${
-                Number.isInteger(parseInt(ping))
-                  ? `\n${" ".repeat(26)}${primaryBoldClr("Ping")} ${parseInt(
-                      ping
-                    )}`
-                  : ""
-              }`
-            )}
-            ${info("Country", ipInfo.countryName)}
-            ${info("Map", capitalizeFirstLetter(server.map))}
-            ${info("Time", `${server.time}`)}
-            ${info(
-              "Password Protected",
-              capitalizeFirstLetter(server.password)
-            )}
-            ${info("Version", `${server.version}`)}
-            ${info(
-              "Third Person",
-              capitalizeFirstLetter(!server.firstPersonOnly)
-            )}
-            ${info("Mods", modsInfo)}
-          `);
+          infoTable.push([
+            primaryBoldClr("Name"),
+            favorited
+              ? favoriteClr(serverNameFilter(server))
+              : secondaryClr(serverNameFilter(server)),
+          ]);
+          infoTable.push([
+            primaryBoldClr("Players"),
+            secondaryClr(`${server.players}/${server.maxPlayers}`),
+          ]);
+          infoTable.push([
+            primaryBoldClr("Address"),
+            secondaryClr(
+              `${ip}:${port} ${commentClr(
+                "(Game Port)"
+              )}\n${ip}:${gamePort} ${commentClr("(Query Port)")}`
+            ),
+          ]);
+          infoTable.push([
+            primaryBoldClr("Ping"),
+            Number.isInteger(parseInt(ping))
+              ? secondaryClr(parseInt(ping))
+              : alertClr(chalk.bold("✖")),
+          ]);
+          infoTable.push([
+            primaryBoldClr("Country"),
+            secondaryClr(ipInfo.countryName),
+          ]);
+          infoTable.push([
+            primaryBoldClr("Map"),
+            secondaryClr(capitalizeFirstLetter(server.map)),
+          ]);
+          infoTable.push([primaryBoldClr("Time"), secondaryClr(server.time)]);
+          infoTable.push([
+            primaryBoldClr("Version"),
+            secondaryClr(server.version),
+          ]);
+          infoTable.push([
+            primaryBoldClr("Third Person"),
+            secondaryClr(capitalizeFirstLetter(!server.firstPersonOnly)),
+          ]);
+
+          if (modsTable.length === 0)
+            infoTable.push([primaryBoldClr("Mods"), secondaryClr("None")]);
+
+          console.log(infoTable.toString());
+          if (modsTable.length > 0) console.log(modsTable.toString());
 
           if (favorited) {
             rl.question(
