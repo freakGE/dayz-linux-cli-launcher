@@ -1,7 +1,8 @@
 # DayZ Linux CLI Launcher
 
 ![dayz-cli-table-list](https://user-images.githubusercontent.com/52050303/184456339-5b4865cf-14d9-4a21-8a44-6f5664f17632.png)
-![dayz-cli-info](https://user-images.githubusercontent.com/52050303/184457109-96026415-4f89-4a24-a6e0-c1b8a4b61268.png)
+![dayz-cli-info](https://user-images.githubusercontent.com/52050303/184498538-6b920999-7d16-4a04-94a1-3995e6dc6e31.png)
+![dayz-cli-mods](https://user-images.githubusercontent.com/52050303/184498541-fd65dc17-2050-4d05-ad28-db9fcbb34b81.png)
 
 Many thanks to [bastimeyer][bastimeyer]
 
