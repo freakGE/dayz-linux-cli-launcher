@@ -29,7 +29,7 @@ After launching it u can start searching servers, servers list length (maximum) 
 
 For better results u can use flags, please read "Flags" to use full potential of launcher.
 
-After finding server that u want just enter ID of that server.
+After finding server that u want just enter ID to join server, also you can use ID in various ways, please read "Manipulate ID".
 
 You can enter ur name from launcher (default = Survivor, u can change it in index.js to avoid rewriting ur name over and over, u have to find variable "userName" for that).
 
