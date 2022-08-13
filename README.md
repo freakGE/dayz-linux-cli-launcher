@@ -31,16 +31,18 @@ For better results u can use flags, please read "Flags" to use full potential of
 
 After finding server that u want just enter ID of that server.
 
-U can enter ur name (default = Survivor, u can change it in index.js to avoid rewriting ur name over and over, u have to find variable "userName" for that).
-
-Also you can add server to favorites by simple choosing server ID and adding "+", to remove from favorites add "-", for ex: 1 + | 1 -
-
-To see more information about server add "i" to ID so for ex: 1 i
-Where u can read everything about server. From here u can also see which mods are server using, u can simple click url(s) and subscribe/unsubscribe them.
-U can add/remove favorites from there as well.
+You can enter ur name from launcher (default = Survivor, u can change it in index.js to avoid rewriting ur name over and over, u have to find variable "userName" for that).
 
 You can change colors of text inside index.js just search "change color" and look around...
 ```
+
+### Manipulate ID
+
+| Key | Meaning                                                                                                                                                                                                                                                                  |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| +   | Adds server in favorites for ex: 1 +                                                                                                                                                                                                                                     |
+| -   | Removes server from favorites for ex: 1 -                                                                                                                                                                                                                                |
+| i   | To see more information about server add "i" to ID for ex: 1 i, Where u can read everything about server. From here u can also see which mods are server using, u can simple click url(s) and subscribe/unsubscribe them. U can add/remove favorites from there as well. |
 
 ### Flags
 
