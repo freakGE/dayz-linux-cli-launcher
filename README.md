@@ -44,30 +44,20 @@ You can change colors of text inside index.js just search "change color" and loo
 
 ### Flags
 
-```
-"text text1" => in quotes it will search string as one word, so instead of searching "text" || "text1" it will show server where all of them are in.
-
-min=x, max=y => min/max is filtring server by players, so if u want server with minimum 25 player, type min=25, server with maximum 75 players? max=25, u can   also use both to find server above 25 and lower 75 players same time.
-
-range(min,max) | range(min-max) => range from min to max, basically its same as above but u have to enter both min and max. range(25,75), range(25-75)
-
--3pp => hides third person servers
-+3pp => shows only third person servers
-
--empty => hides empty servers
-
--full => hides full servers
-
--password => hides password secured servers
-
-diff version of flags but does same d
-+favorites | +favorite | +fav => shows only favorites
--favorites | -favorite | -fav => hides all favorites
-
-+ping => Shows ping on server (Not recommended on large scale searchs! Unless u have time to wait...), also u can see ping on server for faster result by going to server information >> 'ID i'
-
-+foreign => shows foreign servers (Not recommended! it breaks whole grid system, I have zero experience encoding/decoding utf-8 so before I will learn smth about it, I have decided to hide them as default),
-```
+| Flag                           | Meaning                                                                                                                                                                                                             |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "text text1"                   | in quotes it will search string as one word, so instead of searching "text", "text1" it will show server where all of them are in.                                                                                  |
+| min=x, max=y                   | min/max is filtring server by players, so if u want server with minimum 25 player, type min=25, server with maximum 75 players? max=25, u can also use both to find server above 25 and lower 75 players same time. |
+| range(min,max), range(min-max) | range from min to max, basically its same as above but u have to enter both min and max. range(25,75), range(25-75)                                                                                                 |
+| -3pp                           | hides third person servers                                                                                                                                                                                          |
+| +3pp                           | shows only third person servers                                                                                                                                                                                     |
+| -empty                         | hides empty servers                                                                                                                                                                                                 |
+| -full                          | hides full servers                                                                                                                                                                                                  |
+| -password                      | hides password secured servers                                                                                                                                                                                      |
+| +fav                           | shows only favorites                                                                                                                                                                                                |
+| -fav                           | hides all favorites                                                                                                                                                                                                 |
+| +ping                          | Shows ping on server (Not recommended on large scale searchs! Unless u have time to wait...), also u can see ping on server for faster result by going to server information >> 'ID i'                              |
+| +foreign                       | shows foreign servers (Not recommended! it breaks whole grid system, I have zero experience encoding/decoding utf-8 so before I will learn smth about it, I have decided to hide them as default)                   |
 
 For ex:
 
