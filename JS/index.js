@@ -243,18 +243,7 @@ const serverNameFilter = (server, stringSlicer = 19) => {
     const paramsArray = [];
     const inputArray = [];
 
-    let checkQoute = (input.match(/"/g) || []).length;
-
-    let quoteCutter, quote, nonquote, bracket;
-    if (checkQoute >= 2) {
-      quoteCutter = input.trim().split('"');
-      quote = input.trim().split('"')[1];
-    }
-
-    nonquote = input.replace(`"${quote}"`, "");
-
-    const searchArray = nonquote.trim().split(" ");
-    if (typeof quote === "string") searchArray.unshift(quote);
+    const searchArray = input.trim().split(" ");
 
     searchArray.map((word, index) => {
       if (!word.startsWith("range(") && word.match(/[0-9]+\)/)) return;
@@ -280,19 +269,138 @@ const serverNameFilter = (server, stringSlicer = 19) => {
       inputArray.push(word);
     });
 
-    const filtered = data.result.filter((result) =>
-      inputArray.find((word) =>
-        result.name.toLowerCase().includes(word.toLowerCase())
-      )
-    );
+    let bracketsRegEx = /\(|\)|\[|\]/g;
 
-    const newData = Object.keys(filtered).length !== 0 ? filtered : data.result; // Backup
+    if (inputArray.length > 1) {
+      inputArray.find((word, index) => {
+        if (word.length === 0) {
+          inputArray.splice(index, 1);
+        }
+      });
+    }
 
-    const sortedByPlayers = newData.sort((a, b) => {
+    const dataList = [];
+    let foundServer = false;
+    const dataListFilterEvery = data.result.filter((result, index) => {
+      if (inputArray.length === 1 && inputArray[0].length === 0) return;
+      const numberIncluded = inputArray.findIndex((i) => i.match(/[0-9]+/g));
+      const serverName =
+        numberIncluded === -1
+          ? result.name
+              .replace(bracketsRegEx, "")
+              .replace(/[0-9]+/g, "")
+              .replace(/\|/g, " ")
+              .toLowerCase()
+              .trim()
+              .split(" ")
+          : result.name
+              .replace(bracketsRegEx, "")
+              .replace(/\|/g, " ")
+              .toLowerCase()
+              .trim()
+              .split(" ");
+
+      const isEvery = inputArray.every(
+        (word) =>
+          serverName.find((sWord) => sWord === word.toLowerCase()) ||
+          serverName.includes(word.toLowerCase())
+      );
+
+      if (isEvery) {
+        dataList.push(result);
+        foundServer = true;
+      }
+    });
+
+    //* Plan B
+    const matchedWords = [];
+    let wordScore = 50;
+    const dataListFilterSome = data.result.filter((result, index) => {
+      let score = 100;
+      let alreadyChecked = [];
+
+      const numberIncluded = inputArray.findIndex((i) => i.match(/[0-9]+/g));
+      const serverName =
+        numberIncluded === -1
+          ? result.name
+              .replace(bracketsRegEx, "")
+              .replace(/[0-9]+/g, "")
+              .replace(/\|/g, " ")
+              .toLowerCase()
+              .trim()
+              .split(" ")
+          : result.name
+              .replace(bracketsRegEx, "")
+              .replace(/\|/g, " ")
+              .toLowerCase()
+              .trim()
+              .split(" ");
+
+      const isSome = inputArray.some(
+        (word) =>
+          serverName.find((sWord) => sWord === word.toLowerCase()) ||
+          serverName.includes(word.toLowerCase())
+      );
+
+      if (foundServer === false && isSome) {
+        inputArray.map((word) => {
+          if (word.length === 0) return;
+          serverName.map((sWord) => {
+            if (sWord.length === 0) return;
+            if (alreadyChecked.includes(word)) return;
+            if (sWord.toLowerCase() === word.toLowerCase()) {
+              score += wordScore; // wordScore * 2
+              alreadyChecked.push(word);
+            }
+          });
+        });
+        result.score = score;
+        matchedWords.push(result);
+      }
+    });
+    const bestMatch =
+      matchedWords.length > 0 &&
+      matchedWords.reduce((r, e) => (r.score < e.score ? e : r));
+    const bestMatchScore = matchedWords.length > 0 && bestMatch.score;
+
+    const topMatches = matchedWords.map((result) => {
+      if (inputArray.length === 1 && inputArray[0].length === 0) return;
+      if (result.score >= bestMatchScore - wordScore) dataList.push(result);
+    });
+
+    const ratedData = [];
+    const searchAlgorithm = dataList.map((result) => {
+      let score = 100;
+      let serverName = result.name.toLowerCase();
+      let alreadyChecked = [];
+
+      inputArray.find((word) => {
+        serverName.split(" ").find((sWord) => {
+          if (alreadyChecked.includes(word)) return;
+
+          if (sWord.toLowerCase() === word.toLowerCase()) {
+            score += wordScore * 2;
+            alreadyChecked.push(word);
+          }
+        });
+      });
+      score += result.players;
+      result.score = score;
+      ratedData.push(result);
+    });
+
+    const sortedByScore = ratedData.sort((a, b) => {
+      return b.score - a.score;
+    });
+
+    const sortedByPlayers = data.result.sort((a, b) => {
       return b.players - a.players;
     });
 
-    const mapServers = sortedByPlayers.map((server) => {
+    const newData =
+      Object.keys(sortedByScore).length !== 0 ? sortedByScore : sortedByPlayers; // If input is empty
+
+    const mapServers = newData.map((server) => {
       const checkExistence = favorites.result.find(
         (obj) =>
           obj.endpoint.ip === server.endpoint.ip &&
