@@ -49,7 +49,6 @@ You can change colors of text inside index.js just search "change color" and loo
 
 | Flag                           | Meaning                                                                                                                                                                                                             |
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| "text text1"                   | in quotes it will search string as one word, so instead of searching "text", "text1" it will show server where all of them are in.                                                                                  |
 | min=x, max=y                   | min/max is filtring server by players, so if u want server with minimum 25 player, type min=25, server with maximum 75 players? max=75, u can also use both to find server above 25 and lower 75 players same time. |
 | range(min,max), range(min-max) | range from min to max, basically its same as above but u have to enter both min and max. range(25,75), range(25-75)                                                                                                 |
 | -3pp                           | hides third person servers                                                                                                                                                                                          |
@@ -65,7 +64,7 @@ You can change colors of text inside index.js just search "change color" and loo
 For ex:
 
 ```sh
-  Search: "vanilla+ vibes" rearmed range(15,50) -fav -3pp -password
+  Search: Dayz Aftermath EU Rearmed range(15,50) -fav -3pp -password
 ```
 
 ### Custom path
