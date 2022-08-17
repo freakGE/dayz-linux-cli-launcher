@@ -84,7 +84,7 @@ const joinServer = (ip, gamePort, port, name = userName) => {
    * TODO: locate dayz-launcher.sh instead of using static path
    * * --debug for track missing mods etc...
    */
-  return `./dayz-linux-cli-launcher/dayz-launcher.sh --debug --server ${ip}:${gamePort} --port ${port} --launch --name ${name}`;
+  return `./dayz-linux-cli-launcher/dayz-launcher.sh --debug --server ${ip}:${gamePort} --port ${port} --launch --name '${name}'`;
 };
 
 const servers = async () => {
@@ -199,7 +199,7 @@ const launchDayz = (server) => {
               `${ip}:${gamePort}`
             )} --port ${chalk.blue.bold(
               port
-            )} --launch --name ${chalk.yellow.bold(name)}`
+            )} --launch --name '${chalk.yellow.bold(name)}'`
           );
           shell.exec(joinServer(ip, gamePort, port, name));
           rl.close();
