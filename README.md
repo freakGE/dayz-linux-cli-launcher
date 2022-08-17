@@ -28,9 +28,35 @@ To launch script you have to install **nodeJS**.
 
 Follow instructions from "**Install**"
 
+To Launch CLI, u have to run index.js inside dayz-linux-cli-launcher/JS folder.
+
 ```sh
-# go to your home directory "cd" and execute shell script to launch CLI.
-./dayz-cli-launcher.sh
+# Go to directory where u installed it.
+node dayz-linux-cli-launcher/JS/index.js
+```
+
+If u want execute CLI-Launcher from anywhere u can simple create alias for that
+
+- **Bash** `~/.bashrc`
+- **ZSH** `~/.zshrc`
+
+I'm using ZSH so in my case it will be ~/.zshrc
+
+```sh
+# Open with any text editor
+nvim ~/.zshrc
+```
+
+Now scroll down to bottom of that file and add `alias {NAME}="node {PATH}/index.js"`
+
+```sh
+alias DayZ-CLI="node $HOME/dayz-linux-cli-launcher/JS/index.js"
+```
+
+After saving that file open new terminal and type whatever name u passed in, in my case
+
+```sh
+DayZ-CLI
 ```
 
 After launching it u can start searching servers, servers list length (maximum) as default will be 100, u can change it in index.js u have to find variable "maxListLength"
@@ -114,21 +140,11 @@ For ex:
 
 ## **Install**
 
-To install the launcher, simply clone the git repository to ur home directory (Before I will change paths to dynamic, otherwise u have to change path inside index.js, u have to find function joinServer and add path of dayz-launcher.sh):
+To install the launcher, simply clone the git repository to ur home directory, or if u are installing it in other place you have to change index.js, locate variable name "**PATH**" and pass full path of cloned folder, including its own name "dayz-linux-cli-launcher", so basicly just get into directory, write "pwd" in terminal and copy/paste output.
 
 ```sh
-cd
+# Go to your home directory
 git clone https://github.com/freakGE/dayz-linux-cli-launcher.git
-touch dayz-cli-launcher.sh
-chmod u+x dayz-cli-launcher.sh
-```
-
-Open script with any text editor and copy/paste.
-
-```sh
-#!/bin/bash
-
-node dayz-linux-cli-launcher/JS/index.js
 ```
 
 <div class="gapY"><div>
