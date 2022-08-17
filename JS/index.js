@@ -21,9 +21,10 @@ process.stdout.on("resize", () => {
   terminalWidth = process.stdout.columns;
 });
 
-const inputSymbol = ">";
+const PATH = ""; // * PATH of Directory
 const userName = "Survivor"; // * Change it to ur nickname.
 const maxListLength = 100;
+const inputSymbol = ">";
 /**
  * * maxListLength = INTEGER;
  * ? Change integer as u like, recommended (1-500)
@@ -79,12 +80,25 @@ const favoriteNumberClr = (text) => color("yellow.bold", text);
 const numberClr = (text) => color("cyan.bold", text);
 const linkClr = (text) => color("blue.underline", text);
 
+const HOME = shell.exec(`echo "$HOME"`, { silent: true }).stdout.slice(0, -1);
+if (PATH.length > 0) {
+  shell.cd(PATH);
+} else {
+  shell.cd(`${HOME}/dayz-linux-cli-launcher`);
+}
+//                                                          //
 const joinServer = (ip, gamePort, port, name = userName) => {
-  /**
-   * TODO: locate dayz-launcher.sh instead of using static path
-   * * --debug for track missing mods etc...
-   */
-  return `./dayz-linux-cli-launcher/dayz-launcher.sh --debug --server ${ip}:${gamePort} --port ${port} --launch --name '${name}'`;
+  const PWD = shell.exec("pwd", { silent: true }).stdout.slice(0, -1);
+  console.log(
+    `.${PWD}/dayz-launcher.sh ${chalk.red.bold(
+      "--debug"
+    )} --server ${chalk.magenta.bold(
+      `${ip}:${gamePort}`
+    )} --port ${chalk.blue.bold(port)} --launch --name '${chalk.yellow.bold(
+      name
+    )}'`
+  );
+  return `./dayz-launcher.sh --debug --server ${ip}:${gamePort} --port ${port} --launch --name '${name}'`;
 };
 
 const servers = async () => {
@@ -192,15 +206,6 @@ const launchDayz = (server) => {
         (name) => {
           if (name.length < 3) name = userName;
           console.log(primaryBoldClr(`${server.name}`));
-          console.log(
-            `./dayz-linux-cli-launcher/dayz-launcher.sh ${chalk.red.bold(
-              "--debug"
-            )} --server ${chalk.magenta.bold(
-              `${ip}:${gamePort}`
-            )} --port ${chalk.blue.bold(
-              port
-            )} --launch --name '${chalk.yellow.bold(name)}'`
-          );
           shell.exec(joinServer(ip, gamePort, port, name));
           rl.close();
         }
