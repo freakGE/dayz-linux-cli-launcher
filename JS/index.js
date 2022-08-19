@@ -624,30 +624,71 @@ const serverNameFilter = (server, stringSlicer = 19) => {
           return string.charAt(0).toUpperCase() + string.slice(1);
         };
 
-        let longestModNameLength =
-          server.mods.length > 0
-            ? server.mods.reduce((r, e) =>
-                r.name.length < e.name.length ? e : r
-              )
-            : 0;
+        const longestLength = (names) => {
+          if (names.length === 0) return;
+          if (typeof names === undefined) {
+            console.log("no mods");
+            return;
+          }
+          let longestModNameLength =
+            names.length > 0
+              ? names.reduce((r, e) => (r.name.length < e.name.length ? e : r))
+              : 0;
+
+          let longestModIdLength =
+            names.length > 0
+              ? names.reduce((r, e) =>
+                  `${r.steamWorkshopId}`.length < `${e.steamWorkshopId}`.length
+                    ? e
+                    : r
+                )
+              : 0;
+
+          return {
+            name: longestModNameLength.name.length,
+            steamWorkshopId:
+              `https://steamcommunity.com/sharedfiles/filedetails/?id=${longestModIdLength.steamWorkshopId}`
+                .length,
+          };
+        };
 
         let longestModName =
-          server.mods.length > 0 ? longestModNameLength.name.length : 0;
+          typeof longestLength(server.mods) === "undefined"
+            ? 0
+            : longestLength(server.mods).name + 2;
+        let longestModId =
+          typeof longestLength(server.mods) === "undefined"
+            ? 0
+            : longestLength(server.mods).steamWorkshopId + 2;
+        let filtredModNameLength =
+          longestModName + longestModId > terminalWidth - 4
+            ? terminalWidth - longestModId - 3
+            : longestModName;
 
-        longestModName += 2;
+        let filtredModIdLength =
+          terminalWidth - longestModName - 3 > longestModId
+            ? terminalWidth - longestModName - 3
+            : longestModId;
 
         const infoTable = new Table({ colWidths: [14, terminalWidth - 17] });
         const modsTable = new Table({
           style: { head: [titleClr] },
           head: ["Mod", "URL"],
-          colWidths: [longestModName, terminalWidth - longestModName - 3],
+          colWidths: [filtredModNameLength, filtredModIdLength],
         });
 
         const modsArray = [];
 
         const mods = server.mods.map((mod, index) => {
+          let modName = mod.name;
+          let stringSlicer = longestModId + 5;
+          let name = mod.name;
+          if (name.length > terminalWidth - stringSlicer) {
+            modName = `${name.slice(0, terminalWidth - stringSlicer - 3)}...`;
+          }
+
           modsTable.push([
-            secondaryBoldClr(mod.name),
+            secondaryBoldClr(modName),
             linkClr(
               `https://steamcommunity.com/sharedfiles/filedetails/?id=${mod.steamWorkshopId}`
             ),
