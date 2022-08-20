@@ -26,48 +26,13 @@ Also read "**Usage**" to use CLI full potential.
 
 To launch script you have to install **nodeJS**.
 
-Follow instructions from "**Install**"
-
-To Launch CLI, u have to run index.js inside dayz-linux-cli-launcher/JS folder.
-
-```sh
-# Go to directory where u installed it.
-node dayz-linux-cli-launcher/JS/index.js
-```
-
-If u want execute CLI-Launcher from anywhere u can simple create alias for that
-
-- **Bash** `~/.bashrc`
-- **ZSH** `~/.zshrc`
-
-I'm using ZSH so in my case it will be ~/.zshrc
-
-```sh
-# Open with any text editor
-nvim ~/.zshrc
-```
-
-Now scroll down to bottom of that file and add `alias {NAME}="node {PATH}/index.js"`
-
-```sh
-alias DayZ-CLI="node $HOME/dayz-linux-cli-launcher/JS/index.js"
-```
-
-After saving that file open new terminal and type whatever name u passed in, in my case
-
-```sh
-DayZ-CLI
-```
-
-After launching it u can start searching servers, servers list length (maximum) as default will be 100, u can change it in index.js u have to find variable "maxListLength"
+After launching it u can start searching servers, getting details about server, adding to favorites etc...
 
 For better results u can use flags, please read "**Flags**" to use full potential of launcher.
 
 After finding server that u want just enter ID to join server, also you can use ID in various ways, please read "**Manipulate ID**".
 
-You can enter ur name from launcher (default = Survivor, u can change it in index.js to avoid rewriting ur name over and over, u have to find variable "userName" for that).
-
-You can change colors of text inside index.js just search "change color" and look around...
+You can change colors of text inside index.js just search "change color" and look around... If u are not sure what u are doing, don't tauch it! 😄
 
 <div class="gapY"><div>
 
@@ -129,7 +94,6 @@ For ex:
 
 ## **Future ideas**
 
-- locate dayz-launcher.sh instead of using static path
 - Improve performance while displaying ping
 - Don't use a third party server query API and query the server directly
 - Install mods automatically  
@@ -140,11 +104,52 @@ For ex:
 
 ## **Install**
 
-To install the launcher, simply clone the git repository to ur home directory, or if u are installing it in other place you have to change index.js, locate variable name "**PATH**" and pass full path of cloned folder, including its own name "dayz-linux-cli-launcher", so basicly just get into directory, write "pwd" in terminal and copy/paste output.
+To install the launcher, simply clone the git repository
 
 ```sh
-# Go to your home directory
 git clone https://github.com/freakGE/dayz-linux-cli-launcher.git
+```
+
+First of all u have to setup config file in order to run everything smootly for that just follow steps
+
+```sh
+cd dayz-linux-cli-launcher/JS
+node index.js setup
+```
+
+After that answer questions
+
+<details>
+  <summary>For visualation</summary>
+  <img alt="CLI Configuration" src="https://user-images.githubusercontent.com/52050303/185766008-e6605fba-7df8-4bfd-bb3b-e0eab0ac7d47.png"/>
+</details>
+
+Now copy value of Script, in my case "`node /home/vito/dayz-linux-cli-launcher/JS/index.js`"
+
+CLI is ready to launch, just execute index.js but I recommend creating alias to execute launcher from anywhere.
+
+In order to execute CLI-Launcher from anywhere u can simple follow steps down below:
+
+- **Bash** `~/.bashrc`
+- **ZSH** `~/.zshrc`
+
+I'm using ZSH so in my case it will be ~/.zshrc
+
+```sh
+# Open with any text editor
+nvim ~/.zshrc
+```
+
+Now scroll down to bottom of that file and add `alias {CLI-NAME}="{SCRIPT}"`
+
+```sh
+alias DayZ-CLI="node /home/vito/dayz-linux-cli-launcher/JS/index.js"
+```
+
+After saving that file open new terminal and type whatever name u passed in, in my case
+
+```sh
+DayZ-CLI
 ```
 
 <div class="gapY"><div>
@@ -183,14 +188,6 @@ Or apply it permanently:
 <style>
   details {
     cursor: pointer;
-  }
-  summary {
-    font-size: 1.5rem;
-  }
-  summary:hover {
-    -webkit-transition: 250ms linear;
-    transition: 250ms linear;
-    color: #fa8ecd;
   }
   .gapY {
     margin: 2rem 0rem 2rem 0rem;
