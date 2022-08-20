@@ -24,10 +24,6 @@ Also read "**Usage**" to use CLI full potential.
 
 ## **Usage**
 
-To launch script you have to install **nodeJS**.
-
-After launching it u can start searching servers, getting details about server, adding to favorites etc...
-
 For better results u can use flags, please read "**Flags**" to use full potential of launcher.
 
 After finding server that u want just enter ID to join server, also you can use ID in various ways, please read "**Manipulate ID**".
@@ -109,6 +105,8 @@ To install the launcher, simply clone the git repository
 ```sh
 git clone https://github.com/freakGE/dayz-linux-cli-launcher.git
 ```
+
+To launch script you have to install **nodeJS**.
 
 First of all u have to setup config file in order to run everything smootly for that just follow steps
 
