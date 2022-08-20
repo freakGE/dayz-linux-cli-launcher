@@ -124,9 +124,8 @@ After that answer questions
 
 Now copy value of Script, in my case "`node /home/vito/dayz-linux-cli-launcher/JS/index.js`"
 
-CLI is ready to launch, just execute index.js but I recommend creating alias to execute launcher from anywhere.
-
-In order to execute CLI-Launcher from anywhere u can simple follow steps down below:
+CLI is ready to launch, just execute index.js but I recommend creating alias.
+In order to do that follow steps down below:
 
 - **Bash** `~/.bashrc`
 - **ZSH** `~/.zshrc`
