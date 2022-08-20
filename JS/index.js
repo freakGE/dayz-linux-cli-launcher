@@ -6,9 +6,11 @@ const fetchSync = require("sync-fetch");
 const readline = require("readline");
 const chalk = require("chalk");
 const chalkPipe = require("chalk-pipe");
-const favorites = require("./favorites.json");
 const utf8 = require("utf8");
 const Table = require("cli-table");
+
+const favorites = require("./favorites.json");
+const config = require("./config.json");
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -21,10 +23,6 @@ process.stdout.on("resize", () => {
   terminalWidth = process.stdout.columns;
 });
 
-const PATH = ""; // * PATH of Directory
-const userName = "Survivor"; // * Change it to ur nickname.
-const maxListLength = 100;
-const inputSymbol = ">";
 /**
  * * maxListLength = INTEGER;
  * ? Change integer as u like, recommended (1-500)
@@ -80,12 +78,34 @@ const favoriteNumberClr = (text) => color("yellow.bold", text);
 const numberClr = (text) => color("cyan.bold", text);
 const linkClr = (text) => color("blue.underline", text);
 
-const HOME = shell.exec(`echo "$HOME"`, { silent: true }).stdout.slice(0, -1);
-if (PATH.length > 0) {
-  shell.cd(PATH);
-} else {
-  shell.cd(`${HOME}/dayz-linux-cli-launcher`);
+const inputSymbol = ">";
+
+const args = process.argv.slice(2);
+if (args.includes("setup")) setupConfig();
+
+const PATH = config.path;
+const userName = config.userName;
+const maxListLength = config.maxListLength;
+
+if (PATH.length === 0 && !args.includes("setup")) {
+  console.log(
+    `You must setup config before executing script! add argument "${alertClr(
+      "setup"
+    )}" to the script`
+  );
+  console.log(
+    `To setup config file u have to be inside of ${alertClr(
+      "dayz-linux-cli-launcher/JS/"
+    )}`
+  );
+  console.log(
+    `Then run index.js with argument >>> ${primaryClr(`node index.js setup`)}`
+  );
+  process.exit(0);
 }
+
+shell.cd(PATH);
+
 //                                                          //
 const joinServer = (ip, gamePort, port, name = userName) => {
   const PWD = shell.exec("pwd", { silent: true }).stdout.slice(0, -1);
@@ -124,7 +144,7 @@ const serverIP = (ip) => {
 };
 
 function handleFavorite(action, server) {
-  const fileName = "dayz-linux-cli-launcher/JS/favorites.json";
+  const fileName = securedPath("favorites.json");
   try {
     const json = fs.readFileSync(fileName, { encoding: "utf8" });
     const data = JSON.parse(json);
@@ -175,6 +195,131 @@ function handleFavorite(action, server) {
     //                                                //
     const jsonStringify = JSON.stringify(data, null, 2);
     fs.writeFileSync(fileName, jsonStringify, "utf-8");
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function isInt(value) {
+  return (
+    !isNaN(value) &&
+    (function (x) {
+      return (x | 0) === x;
+    })(parseFloat(value))
+  );
+}
+
+function securedPath(file) {
+  const PWD = shell.exec("pwd", { silent: true }).stdout.slice(0, -4);
+  return config.path.length > 0
+    ? `${config.path}/JS/${file}`
+    : `${PWD}/JS/${file}`;
+}
+
+function setupConfig() {
+  const indexExist = shell.test("-f", "index.js"); // exists
+  if (!indexExist) {
+    console.log(
+      `To setup config file u have to be inside of ${alertClr(
+        "dayz-linux-cli-launcher/JS/"
+      )}`
+    );
+    process.exit(0);
+  }
+
+  const PWD = shell.exec("pwd", { silent: true }).stdout.slice(0, -1);
+  let IngameName = config.userName;
+  let maxLength = config.maxListLength;
+
+  const fileName = securedPath("config.json");
+  try {
+    const json = fs.readFileSync(fileName);
+    const data = JSON.parse(json);
+
+    rl.question(
+      `${primaryClr("Ingame name")} ${optionClr(
+        `(default = ${chalk.bold(`${IngameName}`)}):`
+      )}\n${symbolClr(inputSymbol)} `,
+      (name) => {
+        if (name.length > 3) IngameName = name;
+
+        rl.question(
+          `${primaryClr("Maximum servers list length")} ${optionClr(
+            `(default = ${chalk.bold(`${maxLength}`)}):`
+          )}\n${symbolClr(inputSymbol)} `,
+          (length) => {
+            if (length === "") rl.close();
+            if (isInt(length)) {
+              maxLength = length;
+              rl.close();
+            }
+
+            console.log(`Please enter ${alertClr("integer!")}`);
+            rl.setPrompt(
+              `${primaryClr("Maximum servers list length")} ${optionClr(
+                `(default = ${chalk.bold(`${maxLength}`)}):`
+              )}\n${symbolClr(inputSymbol)} `
+            );
+            rl.prompt();
+            rl.on("line", (length) => {
+              if (length === "") rl.close();
+              if (isInt(length)) {
+                maxLength = length;
+                rl.close();
+              }
+
+              console.log(
+                `"${alertClr(length)}" is not ${alertClr("integer!")}`
+              );
+              rl.setPrompt(
+                `${primaryClr("Maximum servers list length")} ${optionClr(
+                  `(default = ${chalk.bold(`${maxLength}`)}):`
+                )}\n${symbolClr(inputSymbol)} `
+              );
+              rl.prompt();
+            });
+          }
+        );
+
+        rl.on("close", () => {
+          data.userName = IngameName;
+          data.maxListLength = maxLength;
+          data.path = PWD.slice(0, -3);
+          data.script = `node ${PWD}/index.js`;
+
+          let firstColWidth = "List length (Max)".length + 2;
+          let secondColWidth =
+            `${data.script}`.length > `${data.userName}`.length
+              ? `${data.script}`.length + 2
+              : `${data.userName}`.length + 2;
+
+          const scriptTable = new Table({
+            style: { head: [titleClr] },
+            head: ["Key", "Value"],
+            colWidths: [firstColWidth, secondColWidth],
+          });
+
+          scriptTable.push([
+            primaryBoldClr("Ingame Name"),
+            secondaryClr(data.userName),
+          ]);
+          scriptTable.push([
+            primaryBoldClr("List length (Max)"),
+            secondaryClr(data.maxListLength),
+          ]);
+          scriptTable.push([
+            primaryBoldClr("Script"),
+            secondaryClr(data.script),
+          ]);
+          console.log(scriptTable.toString());
+
+          const jsonStringify = JSON.stringify(data, null, 2);
+          fs.writeFileSync(fileName, jsonStringify);
+
+          process.exit(0);
+        });
+      }
+    );
   } catch (err) {
     console.log(err);
   }
