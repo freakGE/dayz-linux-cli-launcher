@@ -414,17 +414,8 @@ const serverNameFilter = (server, stringSlicer = 19) => {
 
     searchArray.map((word, index) => {
       if (!word.startsWith("range(") && word.match(/[0-9]+\)/)) return;
-      if (word.match(/range\([0-9]+/)) {
-        paramsArray.push(
-          `${word}${
-            typeof searchArray[index + 1] !== "undefined"
-              ? searchArray[index + 1]
-              : ""
-          }`
-        );
-        return;
-      }
       if (
+        word.match(/range\([0-9]+/) ||
         word.startsWith("-") ||
         word.startsWith("+") ||
         word.startsWith("min=") ||
