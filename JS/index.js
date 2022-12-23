@@ -4,8 +4,7 @@ const shell = require("shelljs");
 const fetch = require("node-fetch");
 const fetchSync = require("sync-fetch");
 const readline = require("readline");
-const chalk = require("chalk");
-const chalkPipe = require("chalk-pipe");
+const colors = require("@colors/colors");
 const utf8 = require("utf8");
 const Table = require("cli-table");
 
@@ -24,16 +23,7 @@ process.stdout.on("resize", () => {
 });
 
 /**
- * * maxListLength = INTEGER;
- * ? Change integer as u like, recommended (1-500)
- * ! If u don't want limit list change integer to 0
- */
-
-const color = (clr, text) => chalkPipe(clr)(text);
-/**
- * * ----- * https://github.com/chalk/chalk
- * * ----- * https://github.com/LitoMore/chalk-pipe
- * * ----- * https://github.com/marak/colors.js
+ * * ----- * https://github.com/DABH/colors.js
  * ! change color inside quote.
  * ? Colors:
  * * ----- * black
@@ -62,21 +52,24 @@ const color = (clr, text) => chalkPipe(clr)(text);
  * * ----- * random
  */
 const titleClr = "green";
-const primaryClr = (text) => color("green", text);
-const primaryBoldClr = (text) => color("green.bold", text);
-const secondaryClr = (text) => color("magenta", text);
-const secondaryBoldClr = (text) => color("magenta.bold", text);
-const symbolClr = (text) => color("magenta.bold", text);
-const optionClr = (text) => color("yellow", text);
-const commentClr = (text) => color("gray", text);
-const paramClr = (text) => color("cyan", text);
-const alertClr = (text) => color("red.bold", text);
-const passwordClr = (text) => color("red.bold", text);
-const favoriteClr = (text) => color("yellow", text);
-const favoriteBgClr = (text) => color("bgYellow.black.bold", text);
-const favoriteNumberClr = (text) => color("yellow.bold", text);
-const numberClr = (text) => color("cyan.bold", text);
-const linkClr = (text) => color("blue.underline", text);
+
+colors.setTheme({
+  primaryClr: "green",
+  primaryBoldClr: ["green", "bold"],
+  secondaryClr: "magenta",
+  secondaryBoldClr: ["magenta", "bold"],
+  symbolClr: ["magenta", "bold"],
+  optionClr: "yellow",
+  commentClr: "gray",
+  paramClr: "cyan",
+  alertClr: ["red", "bold"],
+  passwordClr: ["red", "bold"],
+  favoriteClr: "yellow",
+  favoriteBgClr: ["grbgYelloween", "black", "bold"],
+  favoriteNumberClr: ["yellow", "bold"],
+  numberClr: ["cyan", "bold"],
+  linkClr: ["blue", "underline"],
+});
 
 const inputSymbol = ">";
 
@@ -87,19 +80,27 @@ const PATH = config.path;
 const userName = config.userName;
 const maxListLength = config.maxListLength;
 
+/**
+ * * maxListLength = INTEGER;
+ * ? Change integer as u like, recommended (1-500)
+ * ! If u don't want limit list change integer to 0
+ */
+
 if (PATH.length === 0 && !args.includes("setup")) {
   console.log(
-    `You must setup config before executing script! add argument "${alertClr(
+    `You must setup config before executing script! add argument "${colors.alertClr(
       "setup"
     )}" to the script`
   );
   console.log(
-    `To setup config file u have to be inside of ${alertClr(
+    `To setup config file u have to be inside of ${colors.alertClr(
       "dayz-linux-cli-launcher/JS/"
     )}`
   );
   console.log(
-    `Then run index.js with argument >>> ${primaryClr(`node index.js setup`)}`
+    `Then run index.js with argument >>> ${colors.primaryClr(
+      `node index.js setup`
+    )}`
   );
   process.exit(0);
 }
@@ -110,11 +111,11 @@ shell.cd(PATH);
 const joinServer = (ip, gamePort, port, name = userName) => {
   const PWD = shell.exec("pwd", { silent: true }).stdout.slice(0, -1);
   console.log(
-    `.${PWD}/dayz-launcher.sh ${chalk.red.bold(
+    `.${PWD}/dayz-launcher.sh ${colors.red.bold(
       "--debug"
-    )} --server ${chalk.magenta.bold(
+    )} --server ${colors.magenta.bold(
       `${ip}:${gamePort}`
-    )} --port ${chalk.blue.bold(port)} --launch --name '${chalk.yellow.bold(
+    )} --port ${colors.blue.bold(port)} --launch --name '${colors.yellow.bold(
       name
     )}'`
   );
@@ -160,13 +161,15 @@ function handleFavorite(action, server) {
     if (action === "add") {
       if (typeof checkExistence === "object") {
         console.log(
-          `${chalk.inverse(server.name)} ${primaryBoldClr("is in favorites!")}`
+          `${colors.inverse(server.name)} ${colors.primaryBoldClr(
+            "is in favorites!"
+          )}`
         );
         return;
       }
       result.push(server);
       console.log(
-        `${primaryBoldClr("Added to favorites:")} ${chalk.inverse(
+        `${colors.primaryBoldClr("Added to favorites:")} ${colors.inverse(
           `${server.name}`
         )}`
       );
@@ -175,7 +178,9 @@ function handleFavorite(action, server) {
     if (action === "remove") {
       if (typeof checkExistence !== "object") {
         console.log(
-          `${chalk.inverse(server.name)} ${alertClr("is not favorited!")}`
+          `${colors.inverse(server.name)} ${colors.alertClr(
+            "is not favorited!"
+          )}`
         );
         return;
       }
@@ -187,9 +192,9 @@ function handleFavorite(action, server) {
       );
       result.splice(indexOfServer, 1);
       console.log(
-        `${alertClr("Removed from favorites:")} ${chalk.inverse.strikethrough(
-          `${server.name}`
-        )}`
+        `${colors.alertClr(
+          "Removed from favorites:"
+        )} ${colors.inverse.strikethrough(`${server.name}`)}`
       );
     }
     //                                                //
@@ -220,7 +225,7 @@ function setupConfig() {
   const indexExist = shell.test("-f", "index.js"); // exists
   if (!indexExist) {
     console.log(
-      `To setup config file u have to be inside of ${alertClr(
+      `To setup config file u have to be inside of ${colors.alertClr(
         "dayz-linux-cli-launcher/JS/"
       )}`
     );
@@ -237,16 +242,18 @@ function setupConfig() {
     const data = JSON.parse(json);
 
     rl.question(
-      `${primaryClr("Ingame name")} ${optionClr(
-        `(default = ${chalk.bold(`${IngameName}`)}):`
-      )}\n${symbolClr(inputSymbol)} `,
+      `${colors.primaryClr("Ingame name")} ${colors.optionClr(
+        `(default = ${colors.bold(`${IngameName}`)}):`
+      )}\n${colors.symbolClr(inputSymbol)} `,
       (name) => {
         if (name.length > 3) IngameName = name;
 
         rl.question(
-          `${primaryClr("Maximum servers list length")} ${optionClr(
-            `(default = ${chalk.bold(`${maxLength}`)}):`
-          )}\n${symbolClr(inputSymbol)} `,
+          `${colors.primaryClr(
+            "Maximum servers list length"
+          )} ${colors.optionClr(
+            `(default = ${colors.bold(`${maxLength}`)}):`
+          )}\n${colors.symbolClr(inputSymbol)} `,
           (length) => {
             if (length === "") rl.close();
             if (isInt(length)) {
@@ -254,11 +261,13 @@ function setupConfig() {
               rl.close();
             }
 
-            console.log(`Please enter ${alertClr("integer!")}`);
+            console.log(`Please enter ${colors.alertClr("integer!")}`);
             rl.setPrompt(
-              `${primaryClr("Maximum servers list length")} ${optionClr(
-                `(default = ${chalk.bold(`${maxLength}`)}):`
-              )}\n${symbolClr(inputSymbol)} `
+              `${colors.primaryClr(
+                "Maximum servers list length"
+              )} ${colors.optionClr(
+                `(default = ${colors.bold(`${maxLength}`)}):`
+              )}\n${colors.symbolClr(inputSymbol)} `
             );
             rl.prompt();
             rl.on("line", (length) => {
@@ -269,12 +278,16 @@ function setupConfig() {
               }
 
               console.log(
-                `"${alertClr(length)}" is not ${alertClr("integer!")}`
+                `"${colors.alertClr(length)}" is not ${colors.alertClr(
+                  "integer!"
+                )}`
               );
               rl.setPrompt(
-                `${primaryClr("Maximum servers list length")} ${optionClr(
-                  `(default = ${chalk.bold(`${maxLength}`)}):`
-                )}\n${symbolClr(inputSymbol)} `
+                `${colors.primaryClr(
+                  "Maximum servers list length"
+                )} ${colors.optionClr(
+                  `(default = ${colors.bold(`${maxLength}`)}):`
+                )}\n${colors.symbolClr(inputSymbol)} `
               );
               rl.prompt();
             });
@@ -300,16 +313,16 @@ function setupConfig() {
           });
 
           scriptTable.push([
-            primaryBoldClr("Ingame Name"),
-            secondaryClr(data.userName),
+            colors.primaryBoldClr("Ingame Name"),
+            colors.secondaryClr(data.userName),
           ]);
           scriptTable.push([
-            primaryBoldClr("List length (Max)"),
-            secondaryClr(data.maxListLength),
+            colors.primaryBoldClr("List length (Max)"),
+            colors.secondaryClr(data.maxListLength),
           ]);
           scriptTable.push([
-            primaryBoldClr("Script"),
-            secondaryClr(data.script),
+            colors.primaryBoldClr("Script"),
+            colors.secondaryClr(data.script),
           ]);
           console.log(scriptTable.toString());
 
@@ -330,10 +343,12 @@ const launchDayz = (server) => {
   const port = server.endpoint.port;
   const gamePort = server.gamePort;
   rl.question(
-    `${primaryClr(
-      `Do you want to join ${secondaryBoldClr(server.name)}? ${optionClr(
-        `(y/n ${commentClr(`| y = default`)})`
-      )}\n${symbolClr(inputSymbol)} `
+    `${colors.primaryClr(
+      `Do you want to join ${colors.secondaryBoldClr(
+        server.name
+      )}? ${colors.optionClr(
+        `(y/n ${colors.commentClr(`| y = default`)})`
+      )}\n${colors.symbolClr(inputSymbol)} `
     )}`,
     (join) => {
       if (
@@ -345,12 +360,12 @@ const launchDayz = (server) => {
       }
 
       rl.question(
-        `${primaryClr("Name")} ${optionClr(
-          `(default = ${chalk.bold(`${userName}`)}):`
-        )}\n${symbolClr(inputSymbol)} `,
+        `${colors.primaryClr("Name")} ${colors.optionClr(
+          `(default = ${colors.bold(`${userName}`)}):`
+        )}\n${colors.symbolClr(inputSymbol)} `,
         (name) => {
           if (name.length < 3) name = userName;
-          console.log(primaryBoldClr(`${server.name}`));
+          console.log(colors.primaryBoldClr(`${server.name}`));
           shell.exec(joinServer(ip, gamePort, port, name));
           rl.close();
         }
@@ -367,7 +382,9 @@ const serverNameFilter = (server, stringSlicer = 19) => {
   );
 
   let name = server.name;
-  let serverName = server.password ? `${passwordClr("🔒")}${name}` : name;
+  let serverName = server.password
+    ? `${colors.passwordClr("🔒")}${name}`
+    : name;
   if (name.length > terminalWidth - stringSlicer) {
     if (name.length > (terminalWidth - stringSlicer) * 2) {
       serverName = `${
@@ -380,13 +397,13 @@ const serverNameFilter = (server, stringSlicer = 19) => {
   }
 
   return typeof checkExistence === "object"
-    ? favoriteClr(`${passwordClr("♥ ")}${serverName}`)
+    ? colors.favoriteClr(`${colors.passwordClr("♥ ")}${serverName}`)
     : serverName;
 };
 
 (async () => {
   const data = await servers();
-  rl.question(`${primaryClr("Search:")} `, (input) => {
+  rl.question(`${colors.primaryClr("Search:")} `, (input) => {
     const resultObject = {};
     const resultArray = [];
     const favoritesArray = [];
@@ -666,39 +683,39 @@ const serverNameFilter = (server, stringSlicer = 19) => {
       }
 
       const serverName = server.password
-        ? `${passwordClr("🔒")}${server.name}`
+        ? `${colors.passwordClr("🔒")}${server.name}`
         : server.name;
 
       if (paramsArray.includes("+ping")) {
         pingTable.push([
           `${index < 10 ? " " : ""}${
             typeof checkExistence === "object"
-              ? favoriteNumberClr(index)
-              : numberClr(index)
+              ? colors.favoriteNumberClr(index)
+              : colors.numberClr(index)
           }`,
           typeof checkExistence === "object"
-            ? favoriteClr(`${passwordClr("♥ ")}${serverName}`)
+            ? colors.favoriteClr(`${colors.passwordClr("♥ ")}${serverName}`)
             : serverName,
-          secondaryClr(
-            `${chalk.bold(server.players)}/${chalk.bold(server.maxPlayers)}`
+          colors.secondaryClr(
+            `${colors.bold(server.players)}/${colors.bold(server.maxPlayers)}`
           ),
           Number.isInteger(parseInt(ping))
-            ? paramClr(chalk.bold(parseInt(ping)))
-            : alertClr(chalk.bold(" ✖")),
+            ? colors.paramClr(colors.bold(parseInt(ping)))
+            : colors.alertClr(colors.bold(" ✖")),
         ]);
       }
 
       table.push([
         `${index < 10 ? " " : ""}${
           typeof checkExistence === "object"
-            ? favoriteNumberClr(index)
-            : numberClr(index)
+            ? colors.favoriteNumberClr(index)
+            : colors.numberClr(index)
         }`,
         typeof checkExistence === "object"
-          ? favoriteClr(`${passwordClr("♥ ")}${serverName}`)
+          ? colors.favoriteClr(`${colors.passwordClr("♥ ")}${serverName}`)
           : serverName,
-        secondaryClr(
-          `${chalk.bold(server.players)}/${chalk.bold(server.maxPlayers)}`
+        colors.secondaryClr(
+          `${colors.bold(server.players)}/${colors.bold(server.maxPlayers)}`
         ),
       ]);
 
@@ -714,229 +731,255 @@ const serverNameFilter = (server, stringSlicer = 19) => {
 
     if (listLength === 0) {
       console.log(
-        alertClr(`
+        colors.alertClr(`
       Server not found in API!      
 
-      ${primaryBoldClr("Servers:")} ${secondaryClr(
+      ${colors.primaryBoldClr("Servers:")} ${colors.secondaryClr(
           inputArray.length > 0 ? inputArray.join(", ") : "Any"
         )}
-      ${primaryBoldClr(`${" "}Params:`)} ${paramClr(paramsArray.join(", "))}
+      ${colors.primaryBoldClr(`${" "}Params:`)} ${colors.paramClr(
+          paramsArray.join(", ")
+        )}
       `)
       );
       rl.close();
       return;
     }
     //                                                //
-    rl.question(
-      `${primaryClr("Choose server")} ${optionClr(
-        `(1-${listLength}):`
-      )}\n${symbolClr(inputSymbol)} `,
-      (answer) => {
-        const [number, param] = answer.trim().split(" ");
+    const chooseServer = () => {
+      rl.question(
+        `${colors.primaryClr("Choose server")} ${colors.optionClr(
+          `(1-${listLength}):`
+        )}\n${colors.symbolClr(inputSymbol)} `,
+        (answer) => {
+          const [number, param] = answer.trim().split(" ");
 
-        if (number < 1 || number > listLength || Number.isInteger(number)) {
-          console.log("Server not found!");
-          rl.close();
-          return;
-        }
+          if (!isInt(number)) {
+            console.log(
+              colors.alertClr(`"${colors.paramClr(number)}" is not an integer!`)
+            );
+            return chooseServer();
+          }
 
-        const server = resultObject[number];
-        const ip = server.endpoint.ip;
-        const port = server.endpoint.port;
-        const gamePort = server.gamePort;
-
-        if (param === "+") {
-          handleFavorite("add", server);
-        }
-        if (param === "-") {
-          handleFavorite("remove", server);
-        }
-
-        const info = (topic, detail) => {
-          const topicMaxLength = "Password Protected".length;
-          const topicLength = topicMaxLength - topic.length;
-          return `${
-            topic !== "Mods"
-              ? " ".repeat(topicLength)
-              : modsArray.length > 0
-              ? ""
-              : " ".repeat(topicLength)
-          }${primaryBoldClr(topic)} ${secondaryClr(detail)}`;
-        };
-
-        const capitalizeFirstLetter = (string) => {
-          string = `${string}`;
-          return string.charAt(0).toUpperCase() + string.slice(1);
-        };
-
-        const longestLength = (names) => {
-          if (names.length === 0) return;
-          if (typeof names === undefined) {
-            console.log("no mods");
+          if (number < 1 || number > listLength || Number.isInteger(number)) {
+            console.log("Server not found!");
+            rl.close();
             return;
           }
-          let longestModNameLength =
-            names.length > 0
-              ? names.reduce((r, e) => (r.name.length < e.name.length ? e : r))
-              : 0;
 
-          let longestModIdLength =
-            names.length > 0
-              ? names.reduce((r, e) =>
-                  `${r.steamWorkshopId}`.length < `${e.steamWorkshopId}`.length
-                    ? e
-                    : r
-                )
-              : 0;
+          const server = resultObject[number];
+          const ip = server.endpoint.ip;
+          const port = server.endpoint.port;
+          const gamePort = server.gamePort;
 
-          return {
-            name: longestModNameLength.name.length,
-            steamWorkshopId:
-              `https://steamcommunity.com/sharedfiles/filedetails/?id=${longestModIdLength.steamWorkshopId}`
-                .length,
-          };
-        };
-
-        let longestModName =
-          typeof longestLength(server.mods) === "undefined"
-            ? 0
-            : longestLength(server.mods).name + 2;
-        let longestModId =
-          typeof longestLength(server.mods) === "undefined"
-            ? 0
-            : longestLength(server.mods).steamWorkshopId + 2;
-        let filtredModNameLength =
-          longestModName + longestModId > terminalWidth - 4
-            ? terminalWidth - longestModId - 3
-            : longestModName;
-
-        let filtredModIdLength =
-          terminalWidth - longestModName - 3 > longestModId
-            ? terminalWidth - longestModName - 3
-            : longestModId;
-
-        const infoTable = new Table({ colWidths: [14, terminalWidth - 17] });
-        const modsTable = new Table({
-          style: { head: [titleClr] },
-          head: ["Mod", "URL"],
-          colWidths: [filtredModNameLength, filtredModIdLength],
-        });
-
-        const modsArray = [];
-
-        const mods = server.mods.map((mod, index) => {
-          let modName = mod.name;
-          let stringSlicer = longestModId + 5;
-          let name = mod.name;
-          if (name.length > terminalWidth - stringSlicer) {
-            modName = `${name.slice(0, terminalWidth - stringSlicer - 3)}...`;
+          if (param === "+") {
+            handleFavorite("add", server);
+          }
+          if (param === "-") {
+            handleFavorite("remove", server);
           }
 
-          modsTable.push([
-            secondaryBoldClr(modName),
-            linkClr(
-              `https://steamcommunity.com/sharedfiles/filedetails/?id=${mod.steamWorkshopId}`
-            ),
-          ]);
-        });
+          const info = (topic, detail) => {
+            const topicMaxLength = "Password Protected".length;
+            const topicLength = topicMaxLength - topic.length;
+            return `${
+              topic !== "Mods"
+                ? " ".repeat(topicLength)
+                : modsArray.length > 0
+                ? ""
+                : " ".repeat(topicLength)
+            }${colors.primaryBoldClr(topic)} ${colors.secondaryClr(detail)}`;
+          };
 
-        if (param === "i") {
-          const checkExistence = favorites.result.find(
-            (obj) => obj.endpoint.ip === ip && obj.endpoint.port === port
-          );
-          const favorited = typeof checkExistence === "object";
+          const capitalizeFirstLetter = (string) => {
+            string = `${string}`;
+            return string.charAt(0).toUpperCase() + string.slice(1);
+          };
 
-          const ipInfo = serverIP(ip);
-          const ping = shell.exec(
-            `ping -f -c 1 -w 5 -i 0.002 ${ip} | cut -d "/" -s -f5`,
-            { silent: true }
-          );
+          const longestLength = (names) => {
+            if (names.length === 0) return;
+            if (typeof names === undefined) {
+              console.log("no mods");
+              return;
+            }
+            let longestModNameLength =
+              names.length > 0
+                ? names.reduce((r, e) =>
+                    r.name.length < e.name.length ? e : r
+                  )
+                : 0;
 
-          infoTable.push([
-            primaryBoldClr("Name"),
-            favorited
-              ? favoriteClr(serverNameFilter(server))
-              : secondaryClr(serverNameFilter(server)),
-          ]);
-          infoTable.push([
-            primaryBoldClr("Players"),
-            secondaryClr(`${server.players}/${server.maxPlayers}`),
-          ]);
-          infoTable.push([
-            primaryBoldClr("Address"),
-            secondaryClr(
-              `${ip}:${port} ${commentClr(
-                "(Game Port)"
-              )}\n${ip}:${gamePort} ${commentClr("(Query Port)")}`
-            ),
-          ]);
-          infoTable.push([
-            primaryBoldClr("Ping"),
-            Number.isInteger(parseInt(ping))
-              ? secondaryClr(parseInt(ping))
-              : alertClr(chalk.bold("✖")),
-          ]);
-          infoTable.push([
-            primaryBoldClr("Country"),
-            secondaryClr(ipInfo.countryName),
-          ]);
-          infoTable.push([
-            primaryBoldClr("Map"),
-            secondaryClr(capitalizeFirstLetter(server.map)),
-          ]);
-          infoTable.push([primaryBoldClr("Time"), secondaryClr(server.time)]);
-          infoTable.push([
-            primaryBoldClr("Version"),
-            secondaryClr(server.version),
-          ]);
-          infoTable.push([
-            primaryBoldClr("Third Person"),
-            secondaryClr(capitalizeFirstLetter(!server.firstPersonOnly)),
-          ]);
+            let longestModIdLength =
+              names.length > 0
+                ? names.reduce((r, e) =>
+                    `${r.steamWorkshopId}`.length <
+                    `${e.steamWorkshopId}`.length
+                      ? e
+                      : r
+                  )
+                : 0;
 
-          if (modsTable.length === 0)
-            infoTable.push([primaryBoldClr("Mods"), secondaryClr("None")]);
+            return {
+              name: longestModNameLength.name.length,
+              steamWorkshopId:
+                `https://steamcommunity.com/sharedfiles/filedetails/?id=${longestModIdLength.steamWorkshopId}`
+                  .length,
+            };
+          };
 
-          console.log(infoTable.toString());
-          if (modsTable.length > 0) console.log(modsTable.toString());
+          let longestModName =
+            typeof longestLength(server.mods) === "undefined"
+              ? 0
+              : longestLength(server.mods).name + 2;
+          let longestModId =
+            typeof longestLength(server.mods) === "undefined"
+              ? 0
+              : longestLength(server.mods).steamWorkshopId + 2;
+          let filtredModNameLength =
+            longestModName + longestModId > terminalWidth - 4
+              ? terminalWidth - longestModId - 3
+              : longestModName;
 
-          if (favorited) {
+          let filtredModIdLength =
+            terminalWidth - longestModName - 3 > longestModId
+              ? terminalWidth - longestModName - 3
+              : longestModId;
+
+          const infoTable = new Table({
+            colWidths: [14, terminalWidth - 17],
+          });
+          const modsTable = new Table({
+            style: { head: [titleClr] },
+            head: ["Mod", "URL"],
+            colWidths: [filtredModNameLength, filtredModIdLength],
+          });
+
+          const modsArray = [];
+
+          const mods = server.mods.map((mod, index) => {
+            let modName = mod.name;
+            let stringSlicer = longestModId + 5;
+            let name = mod.name;
+            if (name.length > terminalWidth - stringSlicer) {
+              modName = `${name.slice(0, terminalWidth - stringSlicer - 3)}...`;
+            }
+
+            modsTable.push([
+              colors.secondaryBoldClr(modName),
+              colors.linkClr(
+                `https://steamcommunity.com/sharedfiles/filedetails/?id=${mod.steamWorkshopId}`
+              ),
+            ]);
+          });
+
+          if (param === "i") {
+            const checkExistence = favorites.result.find(
+              (obj) => obj.endpoint.ip === ip && obj.endpoint.port === port
+            );
+            const favorited = typeof checkExistence === "object";
+
+            const ipInfo = serverIP(ip);
+            const ping = shell.exec(
+              `ping -f -c 1 -w 5 -i 0.002 ${ip} | cut -d "/" -s -f5`,
+              { silent: true }
+            );
+
+            infoTable.push([
+              colors.primaryBoldClr("Name"),
+              favorited
+                ? colors.favoriteClr(serverNameFilter(server))
+                : colors.secondaryClr(serverNameFilter(server)),
+            ]);
+            infoTable.push([
+              colors.primaryBoldClr("Players"),
+              colors.secondaryClr(`${server.players}/${server.maxPlayers}`),
+            ]);
+            infoTable.push([
+              colors.primaryBoldClr("Address"),
+              colors.secondaryClr(
+                `${ip}:${port} ${colors.commentClr(
+                  "(Game Port)"
+                )}\n${ip}:${gamePort} ${colors.commentClr("(Query Port)")}`
+              ),
+            ]);
+            infoTable.push([
+              colors.primaryBoldClr("Ping"),
+              Number.isInteger(parseInt(ping))
+                ? colors.secondaryClr(parseInt(ping))
+                : colors.alertClr(colors.bold("✖")),
+            ]);
+            infoTable.push([
+              colors.primaryBoldClr("Country"),
+              colors.secondaryClr(ipInfo.countryName),
+            ]);
+            infoTable.push([
+              colors.primaryBoldClr("Map"),
+              colors.secondaryClr(capitalizeFirstLetter(server.map)),
+            ]);
+            infoTable.push([
+              colors.primaryBoldClr("Time"),
+              colors.secondaryClr(server.time),
+            ]);
+            infoTable.push([
+              colors.primaryBoldClr("Version"),
+              colors.secondaryClr(server.version),
+            ]);
+            infoTable.push([
+              colors.primaryBoldClr("Third Person"),
+              colors.secondaryClr(
+                capitalizeFirstLetter(!server.firstPersonOnly)
+              ),
+            ]);
+
+            if (modsTable.length === 0)
+              infoTable.push([
+                colors.primaryBoldClr("Mods"),
+                colors.secondaryClr("None"),
+              ]);
+
+            console.log(infoTable.toString());
+            if (modsTable.length > 0) console.log(modsTable.toString());
+
+            if (favorited) {
+              rl.question(
+                `${colors.alertClr(
+                  `Remove from favorites? ${colors.optionClr(
+                    `(y/n ${colors.commentClr(`| n = default`)})`
+                  )}\n${colors.symbolClr(inputSymbol)} `
+                )}`,
+                (answer) => {
+                  if (
+                    answer.toLocaleLowerCase() === "y" ||
+                    answer.toLocaleLowerCase() === "yes"
+                  ) {
+                    handleFavorite("remove", server);
+                  }
+                  launchDayz(server);
+                }
+              );
+            }
             rl.question(
-              `${alertClr(
-                `Remove from favorites? ${optionClr(
-                  `(y/n ${commentClr(`| n = default`)})`
-                )}\n${symbolClr(inputSymbol)} `
+              `${colors.primaryBoldClr(
+                `Add to favorites? ${colors.optionClr(
+                  `(y/n ${colors.commentClr(`| n = default`)})`
+                )}\n${colors.symbolClr(inputSymbol)} `
               )}`,
               (answer) => {
                 if (
                   answer.toLocaleLowerCase() === "y" ||
                   answer.toLocaleLowerCase() === "yes"
                 ) {
-                  handleFavorite("remove", server);
+                  handleFavorite("add", server);
                 }
                 launchDayz(server);
               }
             );
           }
-          rl.question(
-            `${primaryBoldClr(
-              `Add to favorites? ${optionClr(
-                `(y/n ${commentClr(`| n = default`)})`
-              )}\n${symbolClr(inputSymbol)} `
-            )}`,
-            (answer) => {
-              if (
-                answer.toLocaleLowerCase() === "y" ||
-                answer.toLocaleLowerCase() === "yes"
-              ) {
-                handleFavorite("add", server);
-              }
-              launchDayz(server);
-            }
-          );
+          launchDayz(server);
         }
-        launchDayz(server);
-      }
-    );
+      );
+    };
+
+    chooseServer();
   });
 })();

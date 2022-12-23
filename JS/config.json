@@ -1,6 +1,6 @@
 {
-  "userName": "Survivor",
+  "userName": "Victor Bagrationi",
   "maxListLength": "100",
-  "path": "",
-  "script": ""
+  "path": "/home/vito/dayz-linux-cli-launcher",
+  "script": "node /home/vito/dayz-linux-cli-launcher/JS/index.js"
 }
