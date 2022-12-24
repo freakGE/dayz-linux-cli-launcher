@@ -32,7 +32,11 @@ You can change colors of text inside index.js just search "change color" and loo
 
 ### **Command Line Options**
 
-```sh
+```
+  -h
+  --help
+    Print this help text.
+
   -s
   --setup
     Setup config file.
@@ -42,7 +46,6 @@ You can change colors of text inside index.js just search "change color" and loo
     Print debug messages to output.
 
   Ex:
-    node index.js --setup
     node index.js --debug
 ```
 
