@@ -6,7 +6,7 @@ const fetchSync = require("sync-fetch");
 const readline = require("readline");
 const colors = require("@colors/colors");
 const utf8 = require("utf8");
-const Table = require("cli-table");
+const Table = require("cli-table3");
 
 const favorites = require("./favorites.json");
 const config = require("./config.json");
@@ -75,6 +75,91 @@ const inputSymbol = ">";
 
 const args = process.argv.slice(2);
 if (args.includes("--setup") || args.includes("-s")) setupConfig();
+
+if (args.includes("-h") || args.includes("--help")) {
+  const pushToTable = (table, key, value) => {
+    table.push({ [colors.numberClr(key)]: value });
+  };
+
+  const manipulateId = new Table({
+    style: { head: [titleClr] },
+    colWidths: [3, terminalWidth - 6],
+    wordWrap: true,
+  });
+  const flags = new Table({
+    style: { head: [titleClr] },
+    colWidths: [17, terminalWidth - 20],
+    wordWrap: true,
+  });
+
+  // ManipulateId
+  pushToTable(manipulateId, "+", "Adds server in favorites for ex: 1 +");
+  pushToTable(manipulateId, "-", "Removes server from favorites for ex: 1 -");
+  pushToTable(
+    manipulateId,
+    "i",
+    `To see more information about server add "i" to ID for ex: 1 i, Where u can read everything about server. From here u can also see which mods are server using, u can simple click url(s) and subscribe/unsubscribe them. U can add/remove favorites from there as well.`
+  );
+  // Flags
+  pushToTable(
+    flags,
+    "min=x, max=y",
+    "min/max is filtring server by players, so if u want server with minimum 25 player, type min=25, server with maximum 75 players? max=75, u can also use both to find server above 25 and lower 75 players same time."
+  );
+  pushToTable(
+    flags,
+    "range(min,max), range(min-max)",
+    "range from min to max, basically its same as above but u have to enter both min and max. range(25,75), range(25-75)"
+  );
+  pushToTable(flags, "-3pp", "hides third person servers");
+  pushToTable(flags, "+3pp", "shows only third person servers");
+  pushToTable(flags, "-empty", "hides empty servers");
+  pushToTable(flags, "-full", "hides full servers");
+  pushToTable(flags, "-password", "hides password secured servers");
+  pushToTable(flags, "+fav", "shows only favorites");
+  pushToTable(flags, "-fav", "hides all favorites");
+  pushToTable(
+    flags,
+    "+ping",
+    "Shows ping on server (Not recommended on large scale searchs! Unless u have time to wait...), also u can see ping on server for faster result by going to server information >> 'ID i'"
+  );
+  pushToTable(
+    flags,
+    "+foreign",
+    "shows foreign servers (Not recommended! it breaks whole grid system, I have zero experience encoding/decoding utf-8 so before I will learn smth about it, I have decided to hide them as default)"
+  );
+
+  console.log(colors.primaryBoldClr("Command Line Options"));
+  console.log(`    ${colors.numberClr(`-h 
+    --help`)}
+      Print this help text.
+
+    ${colors.numberClr(`-s
+    --setup`)}
+      Setup config file.
+
+    ${colors.numberClr(`-d
+    --debug`)}
+      Print debug messages to output.
+
+    ${colors.secondaryBoldClr(`Ex:`)}
+      node index.js --setup
+      node index.js --debug`);
+
+  console.log(colors.primaryBoldClr("\nManipulate ID"));
+  console.log(manipulateId.toString());
+
+  console.log(colors.primaryBoldClr("\nFlags"));
+  console.log(flags.toString());
+  console.log(
+    `   ${colors.secondaryBoldClr(`Ex:`)}
+     ${colors.primaryBoldClr(
+       "Search:"
+     )} Dayz Aftermath EU Rearmed range(15,50) -fav -3pp -password`
+  );
+
+  process.exit(0);
+}
 
 const PATH = config.path;
 const userName = config.userName;
@@ -715,6 +800,7 @@ const serverNameFilter = (server, stringSlicer = 19) => {
       style: { head: [titleClr] },
       head: ["ID", "Server Name", "Players"],
       colWidths: [5, terminalWidth - 18, 9],
+      wordWrap: true,
     });
 
     const pingTable = new Table({
