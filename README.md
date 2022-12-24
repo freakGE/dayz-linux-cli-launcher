@@ -28,7 +28,23 @@ For better results u can use flags, please read "**Flags**" to use full potentia
 
 After finding server that u want just enter ID to join server, also you can use ID in various ways, please read "**Manipulate ID**".
 
-You can change colors of text inside index.js just search "change color" and look around... If u are not sure what u are doing, don't tauch it! 😄
+You can change colors of text inside index.js just search "change color" and look around...
+
+### **Command Line Options**
+
+```sh
+  -s
+  --setup
+    Setup config file.
+
+  -d
+  --debug
+    Print debug messages to output.
+
+  Ex:
+    node index.js --setup
+    node index.js --debug
+```
 
 <div class="gapY"><div>
 
@@ -112,7 +128,7 @@ First of all u have to setup config file in order to run everything smootly for 
 
 ```sh
 cd dayz-linux-cli-launcher/JS
-node index.js setup
+node index.js --setup
 ```
 
 After that answer questions
