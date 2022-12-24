@@ -74,7 +74,7 @@ colors.setTheme({
 const inputSymbol = ">";
 
 const args = process.argv.slice(2);
-if (args.includes("setup")) setupConfig();
+if (args.includes("--setup") || args.includes("-s")) setupConfig();
 
 const PATH = config.path;
 const userName = config.userName;
@@ -86,11 +86,11 @@ const maxListLength = config.maxListLength;
  * ! If u don't want limit list change integer to 0
  */
 
-if (PATH.length === 0 && !args.includes("setup")) {
+if (PATH.length === 0 && !(args.includes("--setup") || args.includes("-s"))) {
   console.log(
     `You must setup config before executing script! add argument "${colors.alertClr(
-      "setup"
-    )}" to the script`
+      "--setup"
+    )}" or "${colors.alertClr("-s")}" to the script`
   );
   console.log(
     `To setup config file u have to be inside of ${colors.alertClr(
@@ -99,7 +99,7 @@ if (PATH.length === 0 && !args.includes("setup")) {
   );
   console.log(
     `Then run index.js with argument >>> ${colors.primaryClr(
-      `node index.js setup`
+      `node index.js --setup`
     )}`
   );
   process.exit(0);
@@ -111,15 +111,89 @@ shell.cd(PATH);
 const joinServer = (ip, gamePort, port, name = userName) => {
   const PWD = shell.exec("pwd", { silent: true }).stdout.slice(0, -1);
   console.log(
-    `.${PWD}/dayz-launcher.sh ${colors.red.bold(
-      "--debug"
-    )} --server ${colors.magenta.bold(
+    `${PWD}/dayz-launcher.sh${
+      args.includes("-d") || args.includes("--debug")
+        ? colors.red.bold(" --debug")
+        : ""
+    } --server ${colors.magenta.bold(
       `${ip}:${gamePort}`
     )} --port ${colors.blue.bold(port)} --launch --name '${colors.yellow.bold(
       name
     )}'`
   );
-  return `./dayz-launcher.sh --debug --server ${ip}:${gamePort} --port ${port} --launch --name '${name}'`;
+
+  const joinToServer = shell.exec(
+    `./dayz-launcher.sh ${
+      args.includes("-d") || args.includes("--debug") ? `--debug` : ""
+    } --server ${ip}:${gamePort} --port ${port} --launch --name '${name}'`,
+    { silent: true }
+  );
+
+  let display = joinToServer.stdout.split("\n");
+  let modMissing = false;
+  for (const line of display) {
+    let l = line;
+    l = l.replace("[dayz-launcher.sh][info]", "");
+    l = l.replace("[dayz-launcher.sh][debug]", "");
+    l.trim();
+
+    if (l.includes("Querying")) {
+      if (l.includes("API")) {
+        let server = l.replace("Querying API for server: ", "").trim();
+        console.log(
+          `${colors.primaryBoldClr(
+            "Querying API for server:"
+          )} ${colors.numberClr(server)}`
+        );
+      } else {
+        let [text, link] = l.trim().split(" ");
+        console.log(`${colors.primaryBoldClr(text)} ${colors.linkClr(link)}`);
+      }
+    }
+
+    if (l.match(/Mod [0-9]+ found: [a-zA-Z]+/)) {
+      let modId = l.split("Mod ").join("").split(" found")[0].trim();
+      let modName = l.split("found: ")[1].trim();
+
+      console.log(
+        colors.primaryBoldClr(
+          `+ ${colors.numberClr(modId)} ${colors.secondaryClr(
+            `(${colors.secondaryBoldClr(modName)})`
+          )}`
+        )
+      );
+    }
+
+    if (l.includes("Subscribe the mod here")) {
+      modMissing = true;
+      let url = l.split(`Subscribe the mod here: `)[1];
+      let id = url.split("id=")[1];
+
+      console.log(
+        colors.alertClr(
+          `- ${colors.numberClr(id)} Subscribe the mod here: ${colors.linkClr(
+            url
+          )}`
+        )
+      );
+    }
+
+    if (l.includes("Launching DayZ"))
+      console.log(
+        `\n${colors.primaryBoldClr(`Launching`)} ${colors.secondaryBoldClr(
+          "DayZ"
+        )}`
+      );
+  }
+  if (modMissing === true) {
+    console.log(`\n${colors.alertClr(`Missing Mods!`)}`);
+    process.exit(0);
+  }
+
+  return shell.exec(
+    `./dayz-launcher.sh --server ${ip}:${gamePort} --port ${port} --launch --name '${name}'`,
+    { silent: true }
+  );
 };
 
 const servers = async () => {
@@ -366,7 +440,7 @@ const launchDayz = (server) => {
         (name) => {
           if (name.length < 3) name = userName;
           console.log(colors.primaryBoldClr(`${server.name}`));
-          shell.exec(joinServer(ip, gamePort, port, name));
+          joinServer(ip, gamePort, port, name);
           rl.close();
         }
       );
@@ -745,6 +819,11 @@ const serverNameFilter = (server, stringSlicer = 19) => {
         (answer) => {
           const [number, param] = answer.trim().split(" ");
 
+          if (number.length === 0) {
+            console.log(colors.alertClr(`Enter the Server ID`));
+            return chooseServer();
+          }
+
           if (!isInt(number)) {
             console.log(
               colors.alertClr(`"${colors.paramClr(number)}" is not an integer!`)
@@ -752,10 +831,9 @@ const serverNameFilter = (server, stringSlicer = 19) => {
             return chooseServer();
           }
 
-          if (number < 1 || number > listLength || Number.isInteger(number)) {
-            console.log("Server not found!");
-            rl.close();
-            return;
+          if (number < 1 || number > listLength) {
+            console.log(colors.alertClr(`Invalid Server ID`));
+            return chooseServer();
           }
 
           const server = resultObject[number];
