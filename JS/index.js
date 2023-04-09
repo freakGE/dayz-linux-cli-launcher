@@ -72,6 +72,9 @@ colors.setTheme({
 });
 
 const inputSymbol = ">";
+const SEARCH = "s";
+const REFRESH = "r";
+const EXIT = "e";
 
 const args = process.argv.slice(2);
 if (args.includes("--setup") || args.includes("-s")) setupConfig();
@@ -193,6 +196,11 @@ if (PATH.length === 0 && !(args.includes("--setup") || args.includes("-s"))) {
 shell.cd(PATH);
 
 //                                                          //
+
+const clearTerminal = () => {
+  process.stdout.write("\033c");
+};
+
 const joinServer = (ip, gamePort, port, name = userName) => {
   const PWD = shell.exec("pwd", { silent: true }).stdout.slice(0, -1);
   console.log(
@@ -561,8 +569,8 @@ const serverNameFilter = (server, stringSlicer = 19) => {
 };
 
 (async () => {
-  const data = await servers();
-  rl.question(`${colors.primaryClr("Search:")} `, (input) => {
+  const chooseServer = async (input) => {
+    const data = await servers();
     const resultObject = {};
     const resultArray = [];
     const favoritesArray = [];
@@ -897,29 +905,58 @@ const serverNameFilter = (server, stringSlicer = 19) => {
       return;
     }
     //                                                //
-    const chooseServer = () => {
+    const searchParamsArray = [];
+    const searchParams = (key, value) => {
+      searchParamsArray.push(
+        `${colors.favoriteNumberClr(key)} ${colors.commentClr(`(${value})`)}`
+      );
+    };
+
+    searchParams("s", "Search");
+    searchParams("r", "Refresh");
+    searchParams("e", "Exit");
+
+    console.log(` ${searchParamsArray.join(`${colors.symbolClr(" | ")}`)}`);
+
+    const pickServer = () => {
       rl.question(
         `${colors.primaryClr("Choose server")} ${colors.optionClr(
           `(1-${listLength}):`
         )}\n${colors.symbolClr(inputSymbol)} `,
         (answer) => {
+          if (answer === SEARCH) {
+            clearTerminal();
+            searchServer();
+            return;
+          }
+          if (answer === REFRESH) {
+            clearTerminal();
+            console.log(`${colors.primaryClr("Search:")} ${input}`);
+            searchServer(input);
+            return;
+          }
+          if (answer === EXIT) {
+            process.exit(0);
+          }
+
+          //
           const [number, param] = answer.trim().split(" ");
 
           if (number.length === 0) {
             console.log(colors.alertClr(`Enter the Server ID`));
-            return chooseServer();
+            return pickServer();
           }
 
           if (!isInt(number)) {
             console.log(
               colors.alertClr(`"${colors.paramClr(number)}" is not an integer!`)
             );
-            return chooseServer();
+            return pickServer();
           }
 
           if (number < 1 || number > listLength) {
             console.log(colors.alertClr(`Invalid Server ID`));
-            return chooseServer();
+            return pickServer();
           }
 
           const server = resultObject[number];
@@ -1134,7 +1171,18 @@ const serverNameFilter = (server, stringSlicer = 19) => {
         }
       );
     };
+    pickServer();
+  };
 
-    chooseServer();
-  });
+  const searchServer = (inputProp) => {
+    if (inputProp) {
+      chooseServer(inputProp);
+      return;
+    }
+
+    rl.question(`${colors.primaryClr("Search:")} `, (input) => {
+      chooseServer(input);
+    });
+  };
+  searchServer();
 })();
