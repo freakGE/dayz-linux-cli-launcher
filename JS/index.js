@@ -296,7 +296,9 @@ const servers = async () => {
     const data = await res.json();
     return data;
   } catch (err) {
-    console.error(err);
+    // console.error(err);
+    console.log(colors.alertClr("Couldn't fetch servers from the API"));
+    process.exit(0);
   }
 };
 
